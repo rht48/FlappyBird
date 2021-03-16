@@ -1,11 +1,15 @@
 package launcher;
 
 import graphics.Renderer;
+import graphics.TexturedModel;
+import model.entity.Entity;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class FlappyBird extends PApplet {
 
     private Renderer renderer;
+    private Entity entity;
 
     public void settings() {
         size(500, 500);
@@ -13,11 +17,21 @@ public class FlappyBird extends PApplet {
 
     public void setup() {
         renderer = new Renderer(this);
+
+        // Example entity
+        entity = new Entity(new TexturedModel(loadImage("assets/test-image.jpg")),
+                new PVector(100, 100),
+                0, 0, 0,
+                0.5f, 0.5f, 0);
         frameRate = 5;
     }
 
     public void draw() {
-        this.renderer.render(new Object());
+        // Do not touch, this resets the frame
+        background(0);
+
+        // Render the entity
+        this.renderer.render(entity);
     }
 
 
