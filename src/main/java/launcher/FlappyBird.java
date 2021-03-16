@@ -5,10 +5,13 @@ import processing.core.PApplet;
 
 public class FlappyBird extends PApplet {
 
+    public static final int HEIGHT = 500;
+    public static final int WIDTH = 500;
+
     private Renderer renderer;
 
     public void settings() {
-        size(500, 500);
+        size(WIDTH, HEIGHT);
     }
 
     public void setup() {
