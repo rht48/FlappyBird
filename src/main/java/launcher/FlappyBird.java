@@ -14,9 +14,6 @@ public class FlappyBird extends PApplet {
     public void setup() {
         renderer = new Renderer(this);
         frameRate = 5;
-        while(true) {
-
-        }
     }
 
     public void draw() {
