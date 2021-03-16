@@ -3,7 +3,7 @@ package launcher;
 import graphics.Renderer;
 import processing.core.PApplet;
 
-public class FlappyBird extends PApplet{
+public class FlappyBird extends PApplet {
 
     private Renderer renderer;
 
@@ -33,7 +33,7 @@ public class FlappyBird extends PApplet{
 
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         PApplet.main("launcher.FlappyBird");
     }
 }
