@@ -2,7 +2,9 @@ package launcher;
 
 import graphics.Renderer;
 import graphics.TexturedModel;
+import model.entity.Bird;
 import model.entity.Entity;
+import model.game.Game;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -13,6 +15,7 @@ public class FlappyBird extends PApplet {
 
     private Renderer renderer;
     private Entity entity;
+    private Game game;
 
     public void settings() {
         size(WIDTH, HEIGHT);
@@ -26,6 +29,11 @@ public class FlappyBird extends PApplet {
                 new PVector(100, 100),
                 0, 0, 0,
                 0.5f, 0.5f, 0);
+        Bird bird = new Bird(new TexturedModel(loadImage("assets/bird.png")),
+                new PVector(100, 100),
+                0, 0, 0,
+                0.1f, 0.1f, 0);
+        game = new Game(bird);
         frameRate = 5;
     }
 
@@ -34,7 +42,9 @@ public class FlappyBird extends PApplet {
         background(0);
 
         // Render the entity
-        this.renderer.render(entity);
+        Entity bird = game.getBird();
+        this.renderer.render(bird);
+        game.update();
     }
 
 
@@ -47,7 +57,9 @@ public class FlappyBird extends PApplet {
     }
 
     public void keyPressed() {
-
+        if(key == ' ') {
+            game.makeBirdJump();
+        }
     }
 
     public static void main(final String[] args) {
