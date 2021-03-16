@@ -8,11 +8,14 @@ import processing.core.PVector;
 
 public class FlappyBird extends PApplet {
 
+    public static final int HEIGHT = 500;
+    public static final int WIDTH = 500;
+
     private Renderer renderer;
     private Entity entity;
 
     public void settings() {
-        size(500, 500);
+        size(WIDTH, HEIGHT);
     }
 
     public void setup() {

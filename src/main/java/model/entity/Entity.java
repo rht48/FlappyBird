@@ -6,9 +6,9 @@ import processing.core.PVector;
 public class Entity {
 
     private TexturedModel model;
-    private PVector position;
-    private float rotX, rotY, rotZ;
-    private float scaleX, scaleY, scaleZ;
+    protected PVector position;
+    protected float rotX, rotY, rotZ;
+    protected float scaleX, scaleY, scaleZ;
 
     public Entity(final TexturedModel model, final PVector position,
                   final float rotX, final float rotY, final float rotZ,
