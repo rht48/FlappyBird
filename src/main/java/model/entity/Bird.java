@@ -19,6 +19,9 @@ public class Bird extends Entity {
         velocity = 0;
     }
 
+    /**
+     * Make the bird flap once and perform a great jump.
+     */
     public void jump() {
         velocity = lift;
     }

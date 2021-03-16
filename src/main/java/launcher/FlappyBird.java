@@ -29,11 +29,9 @@ public class FlappyBird extends PApplet {
                 new PVector(100, 100),
                 0, 0, 0,
                 0.5f, 0.5f, 0);
-        Bird bird = new Bird(new TexturedModel(loadImage("assets/bird.png")),
-                new PVector(100, 100),
-                0, 0, 0,
-                0.1f, 0.1f, 0);
-        game = new Game(bird);
+        TexturedModel birdModel = new TexturedModel(loadImage("assets/bird.png"));
+        TexturedModel pipeModel = new TexturedModel(loadImage("assets/pipe.png"));
+        game = new Game(birdModel, pipeModel);
         frameRate = 5;
     }
 
