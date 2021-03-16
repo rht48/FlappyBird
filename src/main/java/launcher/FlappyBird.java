@@ -1,26 +1,23 @@
 package launcher;
 
+import graphics.Renderer;
 import processing.core.PApplet;
 
 public class FlappyBird extends PApplet{
 
-    Object o;
-    int x = 500;
+    private Renderer renderer;
 
     public void settings() {
         size(500, 500);
     }
 
     public void setup() {
-        o = new Object();
+        renderer = new Renderer(this);
         frameRate = 5;
     }
 
     public void draw() {
-        background(200);
-
-        rect(x--, height - 50, 20, 50);
-
+        this.renderer.render(new Object());
     }
 
     public static void main(String[] args) {
