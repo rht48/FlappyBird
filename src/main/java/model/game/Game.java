@@ -2,9 +2,11 @@ package model.game;
 
 
 import graphics.TexturedModel;
+import launcher.FlappyBird;
 import model.entity.Bird;
 import model.entity.Entity;
 import model.entity.Pipe;
+import processing.core.PApplet;
 import processing.core.PVector;
 
 import java.util.ArrayList;
@@ -17,18 +19,16 @@ public class Game {
     private final TexturedModel pipeModel;
 
     /* Entities for the game */
-    private final Bird bird;
-    private final List<Pipe> pipes;
+    private Bird bird;
+    private List<Pipe> pipes;
+
+    /* Boolean for knowing if the game is finished */
+    private boolean finished;
 
     public Game(final TexturedModel birdModel, final TexturedModel pipeModel) {
         this.birdModel = birdModel;
         this.pipeModel = pipeModel;
-
-        this.bird = new Bird(this.birdModel,
-                new PVector(100, 100),
-                0, 0, 0,
-                0.1f, 0.1f, 0);
-        this.pipes = new ArrayList<>();
+        this.reset();
     }
 
     /**
@@ -36,6 +36,9 @@ public class Game {
      */
     public void update() {
         this.bird.update();
+        if(this.bird.getPosition().y >= FlappyBird.HEIGHT - 100) {
+            this.finished = true;
+        }
     }
 
     /**
@@ -45,11 +48,25 @@ public class Game {
         this.bird.jump();
     }
 
+    public void reset() {
+        this.bird = new Bird(this.birdModel,
+                new PVector(100, 100),
+                0, 0, 0,
+                0.1f, 0.1f, 0);
+        this.pipes = new ArrayList<>();
+
+        this.finished = false;
+    }
+
     public Entity getBird() {
         return this.bird;
     }
 
     public List<Pipe> getPipes() {
         return this.pipes;
+    }
+
+    public boolean isFinished() {
+        return this.finished;
     }
 }
