@@ -20,6 +20,19 @@ public class FlappyBird extends PApplet{
         this.renderer.render(new Object());
     }
 
+
+    public void mouseMoved() {
+
+    }
+
+    public void mouseClicked() {
+
+    }
+
+    public void keyPressed() {
+
+    }
+
     public static void main(String[] args) {
         PApplet.main("launcher.FlappyBird");
     }
