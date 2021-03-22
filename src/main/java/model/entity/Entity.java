@@ -1,6 +1,7 @@
 package model.entity;
 
 import graphics.TexturedModel;
+import processing.core.PImage;
 import processing.core.PVector;
 
 public class Entity {
@@ -9,6 +10,8 @@ public class Entity {
     protected PVector position;
     protected float rotX, rotY, rotZ;
     protected float scaleX, scaleY, scaleZ;
+    protected final float height;
+    protected final float width;
 
     public Entity(final TexturedModel model, final PVector position,
                   final float rotX, final float rotY, final float rotZ,
@@ -21,6 +24,13 @@ public class Entity {
         this.scaleX = scaleX;
         this.scaleY = scaleY;
         this.scaleZ = scaleZ;
+
+        final PImage image = model.getImage();
+        final int imageWidth = image.width;
+        final int imageHeight = image.height;
+        height = (float) imageHeight * (float) scaleX;
+        width = (float) imageWidth * (float) scaleY;
+
     }
 
     public void increasePosition(float dx, float dy, float dz) {

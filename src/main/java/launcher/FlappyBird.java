@@ -2,7 +2,6 @@ package launcher;
 
 import graphics.Renderer;
 import graphics.TexturedModel;
-import model.entity.Bird;
 import model.entity.Entity;
 import model.game.Game;
 import processing.core.PApplet;

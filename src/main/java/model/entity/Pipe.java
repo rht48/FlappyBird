@@ -2,6 +2,7 @@ package model.entity;
 
 import graphics.TexturedModel;
 import launcher.FlappyBird;
+import processing.core.PImage;
 import processing.core.PVector;
 
 public class Pipe extends Entity{
@@ -12,6 +13,8 @@ public class Pipe extends Entity{
     private double speed;
     private boolean birdHasPassed;
     private boolean highlight;
+    private final float width;
+    private final float height;
 
     public Pipe(TexturedModel model, PVector position,
                 float rotX, float rotY, float rotZ,
@@ -23,6 +26,11 @@ public class Pipe extends Entity{
         speed = 3;
         highlight = false;
         birdHasPassed = false;
+        final PImage image = model.getImage();
+        final int imageWidth = image.width;
+        final int imageHeight = image.height;
+        height = (float) imageHeight * (float) scaleX;
+        width = (float) imageWidth * (float) scaleY;
     }
 
     /**
@@ -31,8 +39,8 @@ public class Pipe extends Entity{
      * @return whether the bird has hit or not.
      */
     public boolean hitsBird(final Bird bird) {
-        float halfBirdHeight = bird.scaleY / 2;
-        float halfBirdWidth = bird.scaleX /2;
+        float halfBirdHeight = bird.getHeight() / 2;
+        float halfBirdWidth = bird.getWidth() /2;
         if((bird.getPosition().y - halfBirdHeight < top) || (bird.getPosition().y + halfBirdHeight > bottom)) {
             if ((bird.getPosition().x + halfBirdWidth > position.x) && (bird.getPosition().x - halfBirdWidth < position.x + scaleX)) {
                 highlight = true;
@@ -50,7 +58,7 @@ public class Pipe extends Entity{
      * @return whether the bird has passed the pipe or not.
      */
     public boolean birdHasPassed(final Bird bird) {
-        if(bird.getPosition().x > position.x && !birdHasPassed) {
+        if(bird.getPosition().x > position.x + width && !birdHasPassed) {
             birdHasPassed = true;
             return true;
         }
@@ -74,6 +82,6 @@ public class Pipe extends Entity{
      * @return whether the pipe should be dismissed or not.
      */
     public boolean dismiss() {
-        return position.x < -scaleX;
+        return position.x < -width;
     }
 }
