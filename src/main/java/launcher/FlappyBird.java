@@ -42,6 +42,9 @@ public class FlappyBird extends PApplet {
         // Render the entity
         Entity bird = game.getBird();
         this.renderer.render(bird);
+        game.getPipes().forEach(pipe -> {
+            renderer.render(pipe);
+        });
         game.update();
     }
 
