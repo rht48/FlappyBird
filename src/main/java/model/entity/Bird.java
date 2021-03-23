@@ -2,7 +2,6 @@ package model.entity;
 
 import graphics.TexturedModel;
 import launcher.FlappyBird;
-import processing.core.PImage;
 import processing.core.PVector;
 
 public class Bird extends Entity {

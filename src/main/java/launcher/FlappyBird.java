@@ -28,8 +28,8 @@ public class FlappyBird extends PApplet {
                 new PVector(100, 100),
                 0, 0, 0,
                 0.5f, 0.5f, 0);
-        TexturedModel birdModel = new TexturedModel(loadImage("assets/bird.png"));
-        TexturedModel pipeModel = new TexturedModel(loadImage("assets/pipe.png"));
+        final TexturedModel birdModel = new TexturedModel(loadImage("assets/bird.png"));
+        final TexturedModel pipeModel = new TexturedModel(loadImage("assets/pipe.png"));
         game = new Game(birdModel, pipeModel);
     }
 
@@ -38,7 +38,7 @@ public class FlappyBird extends PApplet {
         background(30, 90, 90);
 
         // Render the entity
-        Entity bird = game.getBird();
+        final Entity bird = game.getBird();
         this.renderer.render(bird);
         game.getPipes().forEach(pipe -> {
             renderer.render(pipe);

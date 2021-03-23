@@ -8,8 +8,12 @@ public class Entity {
 
     private TexturedModel model;
     protected PVector position;
-    protected float rotX, rotY, rotZ;
-    protected float scaleX, scaleY, scaleZ;
+    protected float rotX;
+    protected float rotY;
+    protected float rotZ;
+    protected float scaleX;
+    protected float scaleY;
+    protected float scaleZ;
     protected final float height;
     protected final float width;
 
@@ -33,13 +37,13 @@ public class Entity {
 
     }
 
-    public void increasePosition(float dx, float dy, float dz) {
+    public void increasePosition(final float dx, final float dy, final float dz) {
         this.position.x += dx;
         this.position.y += dy;
         this.position.z += dz;
     }
 
-    public void increaseRotation(float dx, float dy, float dz) {
+    public void increaseRotation(final float dx, final float dy, final float dz) {
         this.rotX += dx;
         this.rotY += dy;
         this.rotZ += dz;
@@ -49,7 +53,7 @@ public class Entity {
         return model;
     }
 
-    public void setModel(TexturedModel model) {
+    public void setModel(final TexturedModel model) {
         this.model = model;
     }
 
@@ -57,7 +61,7 @@ public class Entity {
         return position;
     }
 
-    public void setPosition(PVector position) {
+    public void setPosition(final PVector position) {
         this.position = position;
     }
 
@@ -65,7 +69,7 @@ public class Entity {
         return rotX;
     }
 
-    public void setRotX(float rotX) {
+    public void setRotX(final float rotX) {
         this.rotX = rotX;
     }
 
@@ -73,7 +77,7 @@ public class Entity {
         return rotY;
     }
 
-    public void setRotY(float rotY) {
+    public void setRotY(final float rotY) {
         this.rotY = rotY;
     }
 
@@ -81,7 +85,7 @@ public class Entity {
         return rotZ;
     }
 
-    public void setRotZ(float rotZ) {
+    public void setRotZ(final float rotZ) {
         this.rotZ = rotZ;
     }
 
@@ -89,7 +93,7 @@ public class Entity {
         return scaleX;
     }
 
-    public void setScaleX(float scaleX) {
+    public void setScaleX(final float scaleX) {
         this.scaleX = scaleX;
     }
 
@@ -97,7 +101,7 @@ public class Entity {
         return scaleY;
     }
 
-    public void setScaleY(float scaleY) {
+    public void setScaleY(final float scaleY) {
         this.scaleY = scaleY;
     }
 
@@ -105,7 +109,7 @@ public class Entity {
         return scaleZ;
     }
 
-    public void setScaleZ(float scaleZ) {
+    public void setScaleZ(final float scaleZ) {
         this.scaleZ = scaleZ;
     }
 }

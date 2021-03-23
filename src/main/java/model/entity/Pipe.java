@@ -5,7 +5,7 @@ import launcher.FlappyBird;
 import processing.core.PImage;
 import processing.core.PVector;
 
-public class Pipe extends Entity{
+public class Pipe extends Entity {
 
     private int spacing;
     private int top;
@@ -16,9 +16,9 @@ public class Pipe extends Entity{
     private final float width;
     private final float height;
 
-    public Pipe(TexturedModel model, PVector position,
-                float rotX, float rotY, float rotZ,
-                float scaleX, float scaleY, float scaleZ) {
+    public Pipe(final TexturedModel model, final PVector position,
+                final float rotX, final float rotY, final float rotZ,
+                final float scaleX, final float scaleY, final float scaleZ) {
         super(model, position, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
         spacing = 125;
         top = (int) (Math.random() * FlappyBird.HEIGHT * 5 / 6 + (FlappyBird.HEIGHT / 6));
@@ -39,8 +39,8 @@ public class Pipe extends Entity{
      * @return whether the bird has hit or not.
      */
     public boolean hitsBird(final Bird bird) {
-        float halfBirdHeight = bird.getHeight() / 2;
-        float halfBirdWidth = bird.getWidth() /2;
+        final float halfBirdHeight = bird.getHeight() / 2;
+        final float halfBirdWidth = bird.getWidth() / 2;
         if((bird.getPosition().y - halfBirdHeight < top) || (bird.getPosition().y + halfBirdHeight > bottom)) {
             if ((bird.getPosition().x + halfBirdWidth > position.x) && (bird.getPosition().x - halfBirdWidth < position.x + scaleX)) {
                 highlight = true;
