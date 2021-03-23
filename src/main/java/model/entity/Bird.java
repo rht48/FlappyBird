@@ -10,6 +10,7 @@ public class Bird extends Entity {
     private double lift;
     private double velocity;
 
+
     public Bird(final TexturedModel model, final PVector position,
                 final float rotX, final float rotY, final float rotZ,
                 final float scaleX, final float scaleY, final float scaleZ) {
@@ -17,6 +18,7 @@ public class Bird extends Entity {
         gravity = 0.6;
         lift = -10;
         velocity = 0;
+
     }
 
     /**
@@ -40,4 +42,13 @@ public class Bird extends Entity {
             this.velocity = 0;
         }
     }
+
+    public float getHeight() {
+        return this.height;
+    }
+
+    public float getWidth() {
+        return this.width;
+    }
+
 }
