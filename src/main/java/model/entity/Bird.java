@@ -2,6 +2,7 @@ package model.entity;
 
 import graphics.TexturedModel;
 import launcher.FlappyBird;
+import model.game.Game;
 import processing.core.PVector;
 
 public class Bird extends Entity {
@@ -33,8 +34,8 @@ public class Bird extends Entity {
         position.y += velocity;
 
         // Cas en bas
-        if (position.y >= FlappyBird.HEIGHT - height) {
-            position.y = FlappyBird.HEIGHT - height;
+        if (position.y >= Game.DIM_Y - height) {
+            position.y = Game.DIM_Y - height;
             this.velocity = 0;
         }
 

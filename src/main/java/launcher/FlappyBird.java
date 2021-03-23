@@ -14,7 +14,6 @@ public class FlappyBird extends PApplet {
     public static final int WIDTH = 500;
 
     private Renderer renderer;
-    private PipeRenderer pipeRenderer;
     private Entity entity;
     private Game game;
 
@@ -24,7 +23,6 @@ public class FlappyBird extends PApplet {
 
     public void setup() {
         renderer = new Renderer(this);
-        pipeRenderer = new PipeRenderer(this);
 
         // Example entity
         entity = new Entity(new TexturedModel(loadImage("assets/test-image.jpg")),
@@ -48,8 +46,9 @@ public class FlappyBird extends PApplet {
         final Entity bird = game.getBird();
         this.renderer.render(bird);
         game.getPipes().forEach(pipe -> {
-            pipeRenderer.render(pipe);
+            renderer.render(pipe);
         });
+        this.renderer.render(game.getScore());
         // game.update();
 
 

@@ -2,12 +2,13 @@ package model.entity;
 
 import graphics.TexturedModel;
 import launcher.FlappyBird;
+import model.game.Game;
 import processing.core.PImage;
 import processing.core.PVector;
 
 public class Pipe extends Entity {
 
-    private final int spacing;
+    private static final int spacing = 200;
     private final int top;
     private final int bottom;
     private double speed;
@@ -20,8 +21,7 @@ public class Pipe extends Entity {
                 final float rotX, final float rotY, final float rotZ,
                 final float scaleX, final float scaleY, final float scaleZ) {
         super(model, position, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
-        spacing = 135;
-        top = (int) (Math.random() * (float) FlappyBird.HEIGHT / 2 + ((float) FlappyBird.HEIGHT / 6));
+        top = (int) (Math.random() * (float) (Game.DIM_Y - spacing) / 2 + ((float) Game.DIM_Y / 6));
         bottom = top + spacing;
         speed = 3;
         highlight = false;
@@ -129,6 +129,6 @@ public class Pipe extends Entity {
      * @return the distance travelled by the pipe since it was created
      */
     public float distanceTravelled() {
-        return FlappyBird.WIDTH - position.x;
+        return Game.DIM_X - position.x;
     }
 }

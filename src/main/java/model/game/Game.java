@@ -6,6 +6,7 @@ import launcher.FlappyBird;
 import model.entity.Bird;
 import model.entity.Entity;
 import model.entity.Pipe;
+import model.game.score.Score;
 import processing.core.PVector;
 
 import java.util.ArrayList;
@@ -24,7 +25,11 @@ public class Game {
     /* Boolean for knowing if the game is finished */
     private boolean finished;
 
-    private int score;
+    private final Score score;
+
+    public static final int TERRAIN_HEIGHT = 20;
+    public static final int DIM_X = FlappyBird.WIDTH;
+    public static final int DIM_Y = FlappyBird.HEIGHT - TERRAIN_HEIGHT;
 
     public Game(final TexturedModel birdModel, final TexturedModel pipeModel) {
         this.birdModel = birdModel;
@@ -36,7 +41,7 @@ public class Game {
                 0.1f, 0.1f, 0);
         this.pipes = new ArrayList<>();
 
-        this.score = 0;
+        this.score = new Score();
         this.reset();
     }
 
@@ -58,7 +63,6 @@ public class Game {
         final Pipe firstPipe = pipes.get(0);
         if(firstPipe.dismiss()) {
             pipes.remove(firstPipe);
-            System.out.println(pipes.toArray().length);
         }
 
         // Update pipes
@@ -66,15 +70,14 @@ public class Game {
             pipe.update();
             if(pipe.hitsBird(bird)) {
                 this.finished = true;
-                System.out.println("The bird hit a pipe. Score : " + score);
             } else if(pipe.birdHasPassed(bird)) {
-                score++;
+                this.score.incrementScore(1);
             }
         });
 
 
 
-        if(this.bird.getPosition().y >= FlappyBird.HEIGHT) {
+        if(this.bird.getPosition().y + this.bird.getHeight() >= Game.DIM_Y) {
             this.finished = true;
         }
     }
@@ -106,5 +109,9 @@ public class Game {
 
     public boolean isFinished() {
         return this.finished;
+    }
+
+    public Score getScore() {
+        return this.score;
     }
 }
