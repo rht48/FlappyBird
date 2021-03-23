@@ -18,7 +18,7 @@ public class Perceptron {
     /**
      * Minimum weight that can be assigned during training process
      */
-    private static final int MIN_WEIGHT = -1;
+    private static final int MIN_WEIGHT = 0;
 
     /**
      * Maximum weight that can be assigned during training process
@@ -65,10 +65,10 @@ public class Perceptron {
      * @return
      */
     int activationFunction(final double n) {
-        if (n >= 0) {
+        if (n >= 0.5) {
             return 1;
         } else {
-            return -1;
+            return 0;
         }
     }
 
