@@ -1,6 +1,5 @@
 package graphics;
 
-import model.entity.Entity;
 import model.entity.Pipe;
 import processing.core.PApplet;
 

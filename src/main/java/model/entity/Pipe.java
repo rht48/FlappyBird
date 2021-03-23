@@ -1,7 +1,6 @@
 package model.entity;
 
 import graphics.TexturedModel;
-import launcher.FlappyBird;
 import model.game.Game;
 import processing.core.PImage;
 import processing.core.PVector;

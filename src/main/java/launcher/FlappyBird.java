@@ -1,6 +1,5 @@
 package launcher;
 
-import graphics.PipeRenderer;
 import graphics.Renderer;
 import graphics.TexturedModel;
 import graphics.gui.Button;

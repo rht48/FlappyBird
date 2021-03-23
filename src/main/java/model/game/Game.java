@@ -2,7 +2,6 @@ package model.game;
 
 
 import graphics.TexturedModel;
-import launcher.FlappyBird;
 import model.entity.Bird;
 import model.entity.Entity;
 import model.entity.Pipe;

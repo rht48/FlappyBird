@@ -1,7 +1,6 @@
 package graphics;
 
 import graphics.gui.Button;
-import launcher.FlappyBird;
 import model.entity.Entity;
 import model.entity.Pipe;
 import model.game.Game;
