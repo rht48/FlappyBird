@@ -6,7 +6,6 @@ import launcher.FlappyBird;
 import model.entity.Bird;
 import model.entity.Entity;
 import model.entity.Pipe;
-import processing.core.PApplet;
 import processing.core.PVector;
 
 import java.util.ArrayList;
