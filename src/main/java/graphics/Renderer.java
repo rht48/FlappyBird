@@ -1,5 +1,6 @@
 package graphics;
 
+import graphics.gui.Button;
 import launcher.FlappyBird;
 import model.entity.Entity;
 import model.entity.Pipe;
@@ -75,6 +76,17 @@ public class Renderer {
         a.textFont(a.createFont("ROG FONTS", 48));
         a.fill(245, 245, 80);
         a.text(sc, 0, 0);
+
+        a.popMatrix();
+    }
+
+    public void render(final Button button) {
+        a.pushMatrix();
+
+        a.translate(button.getX(), button.getY());
+        a.textFont(a.createFont("ROG FONTS", 48));
+        a.fill(245, 245, 80);
+        a.rect(0, 0, button.getLenX(), button.getLenY());
 
         a.popMatrix();
     }

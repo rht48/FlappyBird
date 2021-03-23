@@ -3,6 +3,8 @@ package launcher;
 import graphics.PipeRenderer;
 import graphics.Renderer;
 import graphics.TexturedModel;
+import graphics.gui.Button;
+import graphics.gui.Command;
 import model.entity.Entity;
 import model.game.Game;
 import processing.core.PApplet;
@@ -16,6 +18,8 @@ public class FlappyBird extends PApplet {
     private Renderer renderer;
     private Entity entity;
     private Game game;
+
+    private Button button;
 
     public void settings() {
         size(WIDTH, HEIGHT);
@@ -32,6 +36,13 @@ public class FlappyBird extends PApplet {
         final TexturedModel birdModel = new TexturedModel(loadImage("assets/bird.png"));
         final TexturedModel pipeModel = new TexturedModel(loadImage("assets/pipe.png"));
         game = new Game(birdModel, pipeModel);
+
+        button = new Button(Game.DIM_X / 2f - 25, Game.DIM_Y / 2f - 25, 50, 50, new Command() {
+            @Override
+            public void execute() {
+                game.reset();
+            }
+        });
     }
 
     public void draw() {
@@ -49,6 +60,11 @@ public class FlappyBird extends PApplet {
             renderer.render(pipe);
         });
         this.renderer.render(game.getScore());
+
+        if(game.isFinished()) {
+            this.renderer.render(button);
+        }
+
         // game.update();
 
 
@@ -60,7 +76,9 @@ public class FlappyBird extends PApplet {
     }
 
     public void mouseClicked() {
-
+        if(game.isFinished()) {
+            button.click(mouseX, mouseY);
+        }
     }
 
     public void keyPressed() {

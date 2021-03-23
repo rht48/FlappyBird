@@ -16,4 +16,8 @@ public class Score {
         return this.score;
     }
 
+    public void reset() {
+        this.score = 0;
+    }
+
 }

@@ -28,8 +28,8 @@ public class Game {
     private final Score score;
 
     public static final int TERRAIN_HEIGHT = 20;
-    public static final int DIM_X = FlappyBird.WIDTH;
-    public static final int DIM_Y = FlappyBird.HEIGHT - TERRAIN_HEIGHT;
+    public static final int DIM_X = 500;
+    public static final int DIM_Y = 500 - TERRAIN_HEIGHT;
 
     public Game(final TexturedModel birdModel, final TexturedModel pipeModel) {
         this.birdModel = birdModel;
@@ -54,9 +54,9 @@ public class Game {
 
         // Add a new pipe on the right if necessary
         if(pipes.isEmpty()) {
-            pipes.add(new Pipe(this.pipeModel, new PVector(FlappyBird.WIDTH, 0), 0, 0, 0, 1f, 1f, 0));
+            pipes.add(new Pipe(this.pipeModel, new PVector(DIM_X, 0), 0, 0, 0, 1f, 1f, 0));
         } else if(pipes.get(pipes.size() - 1).distanceTravelled() > 250) {
-            pipes.add(new Pipe(this.pipeModel, new PVector(FlappyBird.WIDTH, 0), 0, 0, 0, 1f, 1f, 0));
+            pipes.add(new Pipe(this.pipeModel, new PVector(DIM_X, 0), 0, 0, 0, 1f, 1f, 0));
         }
 
         // Remove a pipe getting off the window
@@ -95,7 +95,7 @@ public class Game {
                 0, 0, 0,
                 0.1f, 0.1f, 0);
         this.pipes = new ArrayList<>();
-
+        this.score.reset();
         this.finished = false;
     }
 
