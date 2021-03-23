@@ -49,22 +49,23 @@ public class Game {
 
         // Add a new pipe on the right if necessary
         if(pipes.isEmpty()) {
-            pipes.add(new Pipe(this.pipeModel, new PVector(FlappyBird.WIDTH, FlappyBird.HEIGHT), 0, 0, 0, 0.1f, 0.1f, 0));
-        } else if(pipes.get(pipes.size() - 1).distanceTravelled() > 150) {
-            pipes.add(new Pipe(this.pipeModel, new PVector(FlappyBird.WIDTH, FlappyBird.HEIGHT), 0, 0, 0, 0.1f, 0.1f, 0));
+            pipes.add(new Pipe(this.pipeModel, new PVector(FlappyBird.WIDTH, 0), 0, 0, 0, 1f, 1f, 0));
+        } else if(pipes.get(pipes.size() - 1).distanceTravelled() > 250) {
+            pipes.add(new Pipe(this.pipeModel, new PVector(FlappyBird.WIDTH, 0), 0, 0, 0, 1f, 1f, 0));
         }
 
         // Remove a pipe getting off the window
         final Pipe firstPipe = pipes.get(0);
         if(firstPipe.dismiss()) {
             pipes.remove(firstPipe);
+            System.out.println(pipes.toArray().length);
         }
 
         // Update pipes
         pipes.forEach(pipe -> {
             pipe.update();
             if(pipe.hitsBird(bird)) {
-                // end game
+                this.finished = true;
                 System.out.println("The bird hit a pipe. Score : " + score);
             } else if(pipe.birdHasPassed(bird)) {
                 score++;
@@ -73,7 +74,7 @@ public class Game {
 
 
 
-        if(this.bird.getPosition().y >= FlappyBird.HEIGHT - 100) {
+        if(this.bird.getPosition().y >= FlappyBird.HEIGHT) {
             this.finished = true;
         }
     }

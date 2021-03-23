@@ -7,9 +7,9 @@ import processing.core.PVector;
 
 public class Pipe extends Entity {
 
-    private int spacing;
-    private int top;
-    private int bottom;
+    private final int spacing;
+    private final int top;
+    private final int bottom;
     private double speed;
     private boolean birdHasPassed;
     private boolean highlight;
@@ -20,8 +20,8 @@ public class Pipe extends Entity {
                 final float rotX, final float rotY, final float rotZ,
                 final float scaleX, final float scaleY, final float scaleZ) {
         super(model, position, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
-        spacing = 125;
-        top = (int) (Math.random() * FlappyBird.HEIGHT * 5 / 6 + (FlappyBird.HEIGHT / 6));
+        spacing = 135;
+        top = (int) (Math.random() * (float) FlappyBird.HEIGHT / 2 + ((float) FlappyBird.HEIGHT / 6));
         bottom = top + spacing;
         speed = 3;
         highlight = false;
@@ -34,20 +34,59 @@ public class Pipe extends Entity {
     }
 
     /**
+     * Getter for attribute top
+     * @return the top pipe ordinate
+     */
+    public float getTop() {
+        return top;
+    }
+
+    /**
+     * Getter for attribute bottom
+     * @return the down pipe ordinate
+     */
+    public float getBottom() {
+        return bottom;
+    }
+
+    /**
+     * Getter for attribute width
+     * @return the pipe width
+     */
+    public float getWidth() {
+        return width;
+    }
+
+
+    /**
      * Has the bird hit the pipe ?
      * @param bird
      * @return whether the bird has hit or not.
      */
     public boolean hitsBird(final Bird bird) {
-        final float halfBirdHeight = bird.getHeight() / 2;
-        final float halfBirdWidth = bird.getWidth() / 2;
-        if((bird.getPosition().y - halfBirdHeight < top) || (bird.getPosition().y + halfBirdHeight > bottom)) {
-            if ((bird.getPosition().x + halfBirdWidth > position.x) && (bird.getPosition().x - halfBirdWidth < position.x + scaleX)) {
+        // Si il est entre les deux tuyaux
+        /*
+        if(!((bird.getPosition().y + bird.getHeight() < top) && (bird.getPosition().y > bottom))) {
+            if ((bird.getPosition().x + bird.getWidth() > position.x) && (bird.getPosition().x < position.x + width)) {
+                highlight = true;
+                birdHasPassed = true;
+                return true;
+            }
+        }*/
+        if(bird.getPosition().x + bird.getWidth() > position.x && bird.getPosition().x < position.x + width) {
+            if(bird.getPosition().y < top || bird.getPosition().y + bird.height > bottom) {
+                return true;
+            }
+        }
+        /*
+        if((bird.getPosition().y + bird.getHeight() < top) && (bird.getPosition().y > bottom)) {
+            if((bird.getPosition().x + bird.getWidth() > position.x) || (bird.getPosition().x < position.x + width)) {
                 highlight = true;
                 birdHasPassed = true;
                 return true;
             }
         }
+         */
         highlight = false;
         return false;
     }

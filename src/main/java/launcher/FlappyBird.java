@@ -1,5 +1,6 @@
 package launcher;
 
+import graphics.PipeRenderer;
 import graphics.Renderer;
 import graphics.TexturedModel;
 import model.entity.Entity;
@@ -13,6 +14,7 @@ public class FlappyBird extends PApplet {
     public static final int WIDTH = 500;
 
     private Renderer renderer;
+    private PipeRenderer pipeRenderer;
     private Entity entity;
     private Game game;
 
@@ -22,6 +24,7 @@ public class FlappyBird extends PApplet {
 
     public void setup() {
         renderer = new Renderer(this);
+        pipeRenderer = new PipeRenderer(this);
 
         // Example entity
         entity = new Entity(new TexturedModel(loadImage("assets/test-image.jpg")),
@@ -34,6 +37,10 @@ public class FlappyBird extends PApplet {
     }
 
     public void draw() {
+        if(!game.isFinished()) {
+            game.update();
+        }
+
         // Do not touch, this resets the frame
         background(30, 90, 90);
 
@@ -41,12 +48,11 @@ public class FlappyBird extends PApplet {
         final Entity bird = game.getBird();
         this.renderer.render(bird);
         game.getPipes().forEach(pipe -> {
-            renderer.render(pipe);
+            pipeRenderer.render(pipe);
         });
-        game.update();
-        if(!game.isFinished()) {
-            game.update();
-        }
+        // game.update();
+
+
     }
 
 

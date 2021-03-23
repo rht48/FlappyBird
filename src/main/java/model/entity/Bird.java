@@ -32,13 +32,15 @@ public class Bird extends Entity {
         velocity += gravity;
         position.y += velocity;
 
-        if (position.y >= FlappyBird.HEIGHT - scaleY / 2) {
-            position.y = FlappyBird.HEIGHT - scaleY / 2;
+        // Cas en bas
+        if (position.y >= FlappyBird.HEIGHT - height) {
+            position.y = FlappyBird.HEIGHT - height;
             this.velocity = 0;
         }
 
-        if (position.y <= scaleY / 2) {
-            position.y = scaleY / 2;
+        // Cas en haut
+        if (position.y <= 0) {
+            position.y = 0;
             this.velocity = 0;
         }
     }
