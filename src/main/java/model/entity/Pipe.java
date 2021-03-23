@@ -89,5 +89,7 @@ public class Pipe extends Entity {
      *
      * @return the distance travelled by the pipe since it was created
      */
-    public float distanceTravelled() { return FlappyBird.WIDTH - position.x; }
+    public float distanceTravelled() {
+        return FlappyBird.WIDTH - position.x;
+    }
 }
