@@ -2,8 +2,10 @@ package launcher;
 
 import graphics.Renderer;
 import graphics.TexturedModel;
+import graphics.color.Color;
 import graphics.gui.Button;
 import graphics.gui.Command;
+import graphics.gui.Panel;
 import model.entity.Entity;
 import model.game.Game;
 import processing.core.PApplet;
@@ -19,6 +21,7 @@ public class FlappyBird extends PApplet {
     private Game game;
 
     private Button button;
+    private Panel endScreen;
 
     public void settings() {
         size(WIDTH, HEIGHT);
@@ -36,12 +39,14 @@ public class FlappyBird extends PApplet {
         final TexturedModel pipeModel = new TexturedModel(loadImage("assets/pipe.png"));
         game = new Game(birdModel, pipeModel);
 
-        button = new Button(Game.DIM_X / 2f - 25, Game.DIM_Y / 2f - 25, 50, 50, new Command() {
+        button = new Button(Game.DIM_X / 2f - 75, Game.DIM_Y / 2f - 25, 150, 50, "Rejouez !", new Color(245, 245, 80), new Command() {
             @Override
             public void execute() {
                 game.reset();
             }
         });
+
+        endScreen = new Panel(Game.DIM_X / 2f - 150, Game.DIM_Y / 2f - 100, 300, 200, button, new Color(200, 100, 100), game.getScore());
     }
 
     public void draw() {
@@ -61,7 +66,7 @@ public class FlappyBird extends PApplet {
         this.renderer.render(game.getScore());
 
         if(game.isFinished()) {
-            this.renderer.render(button);
+            this.renderer.render(endScreen);
         }
 
         // game.update();

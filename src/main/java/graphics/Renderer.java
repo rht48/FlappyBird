@@ -1,6 +1,7 @@
 package graphics;
 
 import graphics.gui.Button;
+import graphics.gui.Panel;
 import model.entity.Entity;
 import model.entity.Pipe;
 import model.game.Game;
@@ -83,10 +84,29 @@ public class Renderer {
         a.pushMatrix();
 
         a.translate(button.getX(), button.getY());
-        a.textFont(a.createFont("ROG FONTS", 48));
-        a.fill(245, 245, 80);
+        a.fill(button.getColor().getRed(), button.getColor().getGreen(), button.getColor().getBlue());
         a.rect(0, 0, button.getLenX(), button.getLenY());
 
+        a.fill(0, 0, 0);
+        a.textFont(a.createFont("ROG FONTS", 30));
+        a.text(button.getText(), 25, button.getLenY() - 15);
+
         a.popMatrix();
+    }
+
+    public void render(final Panel panel) {
+        a.pushMatrix();
+
+        a.translate(panel.getX(), panel.getY());
+        a.fill(panel.getColor().getRed(), panel.getColor().getGreen(), panel.getColor().getBlue());
+        a.rect(0, 0, panel.getLenX(), panel.getLenY());
+
+        a.fill(0, 0, 0);
+        a.textFont(a.createFont("ROG FONTS", 20));
+        a.text("Votre score: "+ panel.getScore().getScore(), panel.getLenX() / 4 + 15, panel.getLenY() / 4);
+
+        a.popMatrix();
+
+        render(panel.getButton());
     }
 }

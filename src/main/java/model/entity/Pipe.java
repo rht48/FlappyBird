@@ -7,7 +7,7 @@ import processing.core.PVector;
 
 public class Pipe extends Entity {
 
-    private static final int spacing = 200;
+    private static final int spacing = 150;
     private final int top;
     private final int bottom;
     private double speed;
