@@ -1,5 +1,5 @@
 {
-  "inputs": 2,
+  "inputs": 3,
   "outputs":1,
   "hiddenNodes": 1000000,
   "population": 300,
