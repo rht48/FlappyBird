@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class Chromosome {
 
+    private float fitness;
+
     /**
      * Vector of weights
      */
@@ -22,6 +24,14 @@ public class Chromosome {
         for(int i = 0; i < size; i++) {
             weights.add((float) Math.random());
         }
+    }
+
+    public float getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(final float fitness) {
+        this.fitness = fitness;
     }
 
     /**
