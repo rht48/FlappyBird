@@ -27,7 +27,7 @@ public class Neat {
     public float connectionMutationChance = 0.05f;
     public float biasConnectionMutationChance = 0.15f;
     public float disableMutationChance = 0.1f;
-    public float enableMutationChance = 0.2f ;
+    public float enableMutationChance = 0.2f;
     public float crossoverChance = 0.75f;
 
     public int stalePool = 20;
@@ -41,11 +41,11 @@ public class Neat {
         return instance;
     }
 
-    public static void load(String file) {
+    public static void load(final String file) {
         load(new File(file));
     }
 
-    public static void load(File file) {
+    public static void load(final File file) {
         instance = fromFile(file);
 
         // no config file found
@@ -54,10 +54,10 @@ public class Neat {
         }
     }
 
-    private static Neat fromFile(File configFile) {
+    private static Neat fromFile(final File configFile) {
         try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile)));
+            final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile)));
             return gson.fromJson(reader, Neat.class);
         } catch (FileNotFoundException e) {
             return null;
@@ -66,7 +66,7 @@ public class Neat {
 
     @Override
     public String toString() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
 }
