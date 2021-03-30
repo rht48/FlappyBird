@@ -12,10 +12,17 @@ public class Button {
 
     private final String text;
 
+    private final int textSize;
+    private final String font;
+
     private final Command command;
     private final Color color;
 
-    public Button(final float x, final float y, final float lenX, final float lenY, final String text, final Color color, final Command command) {
+    public Button(final float x, final float y,
+                  final float lenX, final float lenY,
+                  final String text, final Color color,
+                  final int textSize, final String font,
+                  final Command command) {
         this.x = x;
         this.y = y;
         this.lenX = lenX;
@@ -23,6 +30,8 @@ public class Button {
         this.text = text;
         this.color = color;
         this.command = command;
+        this.textSize = textSize;
+        this.font = font;
     }
 
     public float getX() {
@@ -47,6 +56,14 @@ public class Button {
 
     public String getText() {
         return text;
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public String getFont() {
+        return font;
     }
 
     public void click(final float mouseX, final float mouseY) {

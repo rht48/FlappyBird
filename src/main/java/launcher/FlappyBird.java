@@ -39,7 +39,7 @@ public class FlappyBird extends PApplet {
         final TexturedModel pipeModel = new TexturedModel(loadImage("assets/pipe.png"));
         game = new Game(birdModel, pipeModel);
 
-        button = new Button(Game.DIM_X / 2f - 75, Game.DIM_Y / 2f - 25, 150, 50, "Rejouez !", new Color(245, 245, 80), new Command() {
+        button = new Button(Game.DIM_X / 2f - 75, Game.DIM_Y / 2f - 25, 150, 50, "Rejouez !", new Color(245, 245, 80), 20, "ROG FONTS", new Command() {
             @Override
             public void execute() {
                 game.reset();

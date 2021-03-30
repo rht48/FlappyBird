@@ -88,8 +88,15 @@ public class Renderer {
         a.rect(0, 0, button.getLenX(), button.getLenY());
 
         a.fill(0, 0, 0);
-        a.textFont(a.createFont("ROG FONTS", 30));
-        a.text(button.getText(), 25, button.getLenY() - 15);
+        a.textFont(a.createFont(button.getFont(), button.getTextSize()));
+
+        final String text = button.getText();
+        final float textWidth = a.textWidth(text);
+        final float textHeight = - a.textAscent() + a.textDescent();
+        final float lenX = button.getLenX();
+        final float lenY = button.getLenY();
+
+        a.text(text, (lenX - textWidth) / 2 , (lenY - textHeight) / 2);
 
         a.popMatrix();
     }
@@ -103,7 +110,11 @@ public class Renderer {
 
         a.fill(0, 0, 0);
         a.textFont(a.createFont("ROG FONTS", 20));
-        a.text("Votre score: "+ panel.getScore().getScore(), panel.getLenX() / 4 + 15, panel.getLenY() / 4);
+
+        final String text = "Votre score: "+ panel.getScore().getScore();
+        final float textWidth = a.textWidth(text);
+        final float textHeight = - a.textAscent() + a.textDescent();
+        a.text(text, (panel.getLenX() - textWidth) / 2, panel.getLenY() / 4);
 
         a.popMatrix();
 
