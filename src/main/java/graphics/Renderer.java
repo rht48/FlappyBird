@@ -2,18 +2,37 @@ package graphics;
 
 import graphics.gui.Button;
 import graphics.gui.Panel;
+import model.entity.Bird;
 import model.entity.Entity;
 import model.entity.Pipe;
 import model.game.Game;
+import model.game.HumanGame;
 import model.game.score.Score;
 import processing.core.PApplet;
+import processing.core.PFont;
+import processing.core.PVector;
 
 public class Renderer {
 
     private PApplet a;
+    private final PFont scoreFont;
 
     public Renderer(final PApplet applet) {
         this.a = applet;
+        scoreFont = a.createFont("ROG FONTS", 48);
+    }
+
+    public void render(final Game game) {
+        a.noStroke();
+        a.fill(0, 255, 255);
+        a.rect(0, 0, Game.DIM_X, Game.DIM_Y);
+
+        game.getBirds().forEach(this::render);
+        game.getPipes().forEach(this::render);
+        render(game.getScore());
+
+        a.fill(200, 173, 127);
+        a.rect(0, Game.DIM_Y, Game.DIM_X, Game.DIM_Y + Game.TERRAIN_HEIGHT);
     }
 
     public void render(final Entity entity) {
@@ -69,11 +88,12 @@ public class Renderer {
         a.pushMatrix();
         final String sc = "" + score.getScore();
 
+        a.textFont(scoreFont);
         final float textWidth = a.textWidth(sc);
-        final float textHeight = a.textAscent() + a.textDescent();
+        final float textHeight = - a.textAscent() + a.textDescent();
 
-        a.translate(Game.DIM_X / 2f - textWidth / 2, textHeight);
-        a.textFont(a.createFont("ROG FONTS", 48));
+        a.translate(Game.DIM_X / 2f - textWidth / 2, - textHeight);
+
         a.fill(245, 245, 80);
         a.text(sc, 0, 0);
 
@@ -115,6 +135,7 @@ public class Renderer {
         final float textWidth = a.textWidth(text);
         final float textHeight = - a.textAscent() + a.textDescent();
         a.text(text, (panel.getLenX() - textWidth) / 2, panel.getLenY() / 4);
+
 
         a.popMatrix();
 

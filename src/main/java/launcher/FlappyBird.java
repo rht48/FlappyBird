@@ -6,15 +6,17 @@ import graphics.color.Color;
 import graphics.gui.Button;
 import graphics.gui.Command;
 import graphics.gui.Panel;
+import model.entity.Bird;
 import model.entity.Entity;
 import model.game.Game;
+import model.game.HumanGame;
 import processing.core.PApplet;
 import processing.core.PVector;
 
 public class FlappyBird extends PApplet {
 
     public static final int HEIGHT = 500;
-    public static final int WIDTH = 500;
+    public static final int WIDTH = 800;
 
     private Renderer renderer;
     private Entity entity;
@@ -37,16 +39,16 @@ public class FlappyBird extends PApplet {
                 0.5f, 0.5f, 0);
         final TexturedModel birdModel = new TexturedModel(loadImage("assets/bird.png"));
         final TexturedModel pipeModel = new TexturedModel(loadImage("assets/pipe.png"));
-        game = new Game(birdModel, pipeModel);
+        game = new HumanGame(birdModel, pipeModel);
 
-        button = new Button(Game.DIM_X / 2f - 75, Game.DIM_Y / 2f - 25, 150, 50, "Rejouez !", new Color(245, 245, 80), 20, "ROG FONTS", new Command() {
+        button = new Button(HumanGame.DIM_X / 2f - 75, HumanGame.DIM_Y / 2f - 25, 150, 50, "Rejouez !", new Color(245, 245, 80), 20, "ROG FONTS", new Command() {
             @Override
             public void execute() {
                 game.reset();
             }
         });
 
-        endScreen = new Panel(Game.DIM_X / 2f - 150, Game.DIM_Y / 2f - 100, 300, 200, button, new Color(200, 100, 100), game.getScore());
+        endScreen = new Panel(HumanGame.DIM_X / 2f - 150, HumanGame.DIM_Y / 2f - 100, 300, 200, button, new Color(200, 100, 100), game.getScore());
     }
 
     public void draw() {
@@ -55,15 +57,11 @@ public class FlappyBird extends PApplet {
         }
 
         // Do not touch, this resets the frame
-        background(30, 90, 90);
+        background(255);
 
         // Render the entity
-        final Entity bird = game.getBird();
-        this.renderer.render(bird);
-        game.getPipes().forEach(pipe -> {
-            renderer.render(pipe);
-        });
-        this.renderer.render(game.getScore());
+        this.renderer.render(game);
+
 
         if(game.isFinished()) {
             this.renderer.render(endScreen);
@@ -87,7 +85,7 @@ public class FlappyBird extends PApplet {
 
     public void keyPressed() {
         if(key == ' ') {
-            game.makeBirdJump();
+            game.makeBirdsJump();
         }
         if(game.isFinished() && key == '\n') {
             game.reset();

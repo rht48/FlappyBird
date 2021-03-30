@@ -1,7 +1,7 @@
 package model.entity;
 
 import graphics.TexturedModel;
-import model.game.Game;
+import model.game.HumanGame;
 import processing.core.PVector;
 
 public class Bird extends Entity {
@@ -33,8 +33,8 @@ public class Bird extends Entity {
         position.y += velocity;
 
         // Cas en bas
-        if (position.y >= Game.DIM_Y - height) {
-            position.y = Game.DIM_Y - height;
+        if (position.y >= HumanGame.DIM_Y - height) {
+            position.y = HumanGame.DIM_Y - height;
             this.velocity = 0;
         }
 

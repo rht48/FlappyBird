@@ -1,7 +1,7 @@
 package model.entity;
 
 import graphics.TexturedModel;
-import model.game.Game;
+import model.game.HumanGame;
 import processing.core.PImage;
 import processing.core.PVector;
 
@@ -20,7 +20,7 @@ public class Pipe extends Entity {
                 final float rotX, final float rotY, final float rotZ,
                 final float scaleX, final float scaleY, final float scaleZ) {
         super(model, position, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
-        top = (int) (Math.random() * (float) (Game.DIM_Y - spacing) / 2 + ((float) Game.DIM_Y / 6));
+        top = (int) (Math.random() * (float) (HumanGame.DIM_Y - spacing) / 2 + ((float) HumanGame.DIM_Y / 6));
         bottom = top + spacing;
         speed = 3;
         highlight = false;
@@ -128,6 +128,6 @@ public class Pipe extends Entity {
      * @return the distance travelled by the pipe since it was created
      */
     public float distanceTravelled() {
-        return Game.DIM_X - position.x;
+        return HumanGame.DIM_X - position.x;
     }
 }
