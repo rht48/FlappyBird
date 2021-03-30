@@ -4,7 +4,6 @@ import graphics.TexturedModel;
 import model.entity.Bird;
 import model.entity.Pipe;
 import model.game.score.Score;
-import processing.core.PVector;
 
 import java.util.ArrayList;
 import java.util.List;

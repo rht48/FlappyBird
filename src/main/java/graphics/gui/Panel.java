@@ -1,7 +1,6 @@
 package graphics.gui;
 
 import graphics.color.Color;
-import model.game.score.Score;
 
 import java.util.List;
 

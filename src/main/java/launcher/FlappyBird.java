@@ -75,13 +75,10 @@ public class FlappyBird extends PApplet {
         this.renderer.render(game);
 
         this.renderer.render(controlPanel);
-        
+
         if(game.isFinished()) {
             this.renderer.render(endScreen);
         }
-
-        // game.update();
-
 
     }
 

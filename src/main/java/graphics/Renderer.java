@@ -3,15 +3,13 @@ package graphics;
 import graphics.gui.Button;
 import graphics.gui.Label;
 import graphics.gui.Panel;
-import model.entity.Bird;
 import model.entity.Entity;
 import model.entity.Pipe;
 import model.game.Game;
-import model.game.HumanGame;
 import model.game.score.Score;
 import processing.core.PApplet;
 import processing.core.PFont;
-import processing.core.PVector;
+
 
 public class Renderer {
 
@@ -91,9 +89,9 @@ public class Renderer {
 
         a.textFont(scoreFont);
         final float textWidth = a.textWidth(sc);
-        final float textHeight = - a.textAscent() + a.textDescent();
+        final float textHeight = -a.textAscent() + a.textDescent();
 
-        a.translate(Game.DIM_X / 2f - textWidth / 2, - textHeight);
+        a.translate(Game.DIM_X / 2f - textWidth / 2, -textHeight);
 
         a.fill(245, 245, 80);
         a.text(sc, 0, 0);
@@ -113,11 +111,11 @@ public class Renderer {
 
         final String text = button.getText();
         final float textWidth = a.textWidth(text);
-        final float textHeight = - a.textAscent() + a.textDescent();
+        final float textHeight = -a.textAscent() + a.textDescent();
         final float lenX = button.getLenX();
         final float lenY = button.getLenY();
 
-        a.text(text, (lenX - textWidth) / 2 , (lenY - textHeight) / 2);
+        a.text(text, (lenX - textWidth) / 2, (lenY - textHeight) / 2);
 
         a.popMatrix();
     }
@@ -125,12 +123,12 @@ public class Renderer {
     public void render(final Label label) {
         a.pushMatrix();
         a.translate(label.getX(), label.getY());
-        a.textFont(a.createFont(label.getFont(), label.getTextSize()   ));
+        a.textFont(a.createFont(label.getFont(), label.getTextSize()));
         final String text = label.getText();
         final float textWidth = a.textWidth(text);
-        final float textHeight = - a.textAscent() + a.textDescent();
+        final float textHeight = -a.textAscent() + a.textDescent();
         a.fill(0);
-        a.text(text, (- textWidth) / 2 , (- textHeight) / 2);
+        a.text(text, (-textWidth) / 2, (-textHeight) / 2);
         a.popMatrix();
     }
 
@@ -140,11 +138,6 @@ public class Renderer {
         a.translate(panel.getX(), panel.getY());
         a.fill(panel.getColor().getRed(), panel.getColor().getGreen(), panel.getColor().getBlue());
         a.rect(0, 0, panel.getLenX(), panel.getLenY());
-
-//        a.fill(0, 0, 0);
-//        a.textFont(a.createFont("ROG FONTS", 20));
-
-
 
         a.popMatrix();
         panel.getLabels().forEach(this::render);

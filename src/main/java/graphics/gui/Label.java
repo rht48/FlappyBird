@@ -1,6 +1,5 @@
 package graphics.gui;
 
-import events.Command;
 import events.StringCommand;
 
 public class Label extends Gui {
