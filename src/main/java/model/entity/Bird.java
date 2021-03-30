@@ -11,10 +11,8 @@ public class Bird extends Entity {
     private double velocity;
 
 
-    public Bird(final TexturedModel model, final PVector position,
-                final float rotX, final float rotY, final float rotZ,
-                final float scaleX, final float scaleY, final float scaleZ) {
-        super(model, position, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
+    public Bird(final TexturedModel model, final PVector position) {
+        super(model, position, 0, 0, 0, 0.1f, 0.1f, 0);
         gravity = 0.6;
         lift = -10;
         velocity = 0;

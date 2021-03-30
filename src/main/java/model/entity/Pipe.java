@@ -10,7 +10,7 @@ public class Pipe extends Entity {
     private static final int spacing = 150;
     private final int top;
     private final int bottom;
-    private double speed;
+    public static double speed;
     private boolean birdHasPassed;
     private boolean highlight;
     private final float width;

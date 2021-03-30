@@ -34,7 +34,6 @@ public abstract class Game {
         this.pipes = new ArrayList<>();
 
         this.score = new Score();
-        this.reset();
     }
 
     public abstract List<Bird> getBirds();
@@ -55,5 +54,13 @@ public abstract class Game {
 
     public Score getScore() {
         return this.score;
+    }
+
+    public TexturedModel getBirdModel() {
+        return birdModel;
+    }
+
+    public TexturedModel getPipeModel() {
+        return pipeModel;
     }
 }

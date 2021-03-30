@@ -8,14 +8,14 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class IAGame extends Game {
 
-    private final List<Bird> birds;
+    private final List<Bird> birds = new ArrayList<>();
 
     public IAGame(final TexturedModel birdModel, final TexturedModel pipeModel) {
         super(birdModel, pipeModel);
-        this.birds = new ArrayList<>();
     }
 
     @Override
@@ -25,6 +25,13 @@ public class IAGame extends Game {
 
     @Override
     public void reset() {
+        this.birds.forEach(bird -> {
+            final PVector position = bird.getPosition();
+            position.x = 100;
+            position.y = 100;
+            final IABird b = (IABird) bird;
+            b.setNext(true);
+        });
         this.pipes = new ArrayList<>();
         this.score.reset();
         this.finished = false;
@@ -36,6 +43,8 @@ public class IAGame extends Game {
             final IABird b = (IABird) bird;
             if(b.next()) {
                 b.update();
+            }else {
+                b.increasePosition((float) -Pipe.speed, 0, 0);
             }
         });
 
@@ -54,18 +63,28 @@ public class IAGame extends Game {
 
         pipes.forEach(Pipe::update);
 
+        final AtomicBoolean scoreIncremented = new AtomicBoolean(false);
         // Update pipes
-        birds.forEach(bird -> pipes.forEach(pipe -> {
+        birds.forEach(bird ->  {
             final IABird b = (IABird) bird;
-            if(b.next()) {
-                if (pipe.hitsBird(bird)) {
-                    b.setNext(false);
-                } else if (pipe.birdHasPassed(bird)) {
-                    b.incrementScore();
-                }
+            if(bird.getPosition().y + bird.getHeight() >= Game.DIM_Y) {
+                b.setNext(false);
             }
-        }));
+            pipes.forEach(pipe -> {
+                if(b.next()) {
+                    if (pipe.hitsBird(bird)) {
+                        b.setNext(false);
+                    } else if (pipe.birdHasPassed(bird)) {
+                        b.incrementScore();
+                        scoreIncremented.set(true);
+                    }
+                }
+            });
+        });
 
+        if(scoreIncremented.get()) {
+            score.incrementScore(1);
+        }
 
         this.finished = true;
         for(var bird : birds) {

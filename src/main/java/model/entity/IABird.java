@@ -9,8 +9,8 @@ public class IABird extends Bird {
     private final Score score;
     private boolean next = true;
 
-    public IABird(final TexturedModel model, final PVector position, final float rotX, final float rotY, final float rotZ, final float scaleX, final float scaleY, final float scaleZ) {
-        super(model, position, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
+    public IABird(final TexturedModel model, final PVector position) {
+        super(model, position);
         this.score = new Score();
     }
 

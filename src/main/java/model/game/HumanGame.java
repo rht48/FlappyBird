@@ -22,9 +22,8 @@ public class HumanGame extends Game {
         super(birdModel, pipeModel);
 
         this.bird = new Bird(this.birdModel,
-                new PVector(100, 100),
-                0, 0, 0,
-                0.1f, 0.1f, 0);
+                new PVector(100, 100));
+        this.reset();
     }
 
     @Override
@@ -78,9 +77,7 @@ public class HumanGame extends Game {
 
     public void reset() {
         this.bird = new Bird(this.birdModel,
-                new PVector(100, 100),
-                0, 0, 0,
-                0.1f, 0.1f, 0);
+                new PVector(100, 100));
         this.pipes = new ArrayList<>();
         this.score.reset();
         this.finished = false;
