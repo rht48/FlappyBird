@@ -1,6 +1,7 @@
 package graphics;
 
 import graphics.gui.Button;
+import graphics.gui.Label;
 import graphics.gui.Panel;
 import model.entity.Bird;
 import model.entity.Entity;
@@ -121,6 +122,18 @@ public class Renderer {
         a.popMatrix();
     }
 
+    public void render(final Label label) {
+        a.pushMatrix();
+        a.translate(label.getX(), label.getY());
+        a.textFont(a.createFont(label.getFont(), label.getTextSize()   ));
+        final String text = label.getText();
+        final float textWidth = a.textWidth(text);
+        final float textHeight = - a.textAscent() + a.textDescent();
+        a.fill(0);
+        a.text(text, (- textWidth) / 2 , (- textHeight) / 2);
+        a.popMatrix();
+    }
+
     public void render(final Panel panel) {
         a.pushMatrix();
 
@@ -128,16 +141,14 @@ public class Renderer {
         a.fill(panel.getColor().getRed(), panel.getColor().getGreen(), panel.getColor().getBlue());
         a.rect(0, 0, panel.getLenX(), panel.getLenY());
 
-        a.fill(0, 0, 0);
-        a.textFont(a.createFont("ROG FONTS", 20));
+//        a.fill(0, 0, 0);
+//        a.textFont(a.createFont("ROG FONTS", 20));
 
-        final String text = "Votre score: "+ panel.getScore().getScore();
-        final float textWidth = a.textWidth(text);
-        final float textHeight = - a.textAscent() + a.textDescent();
-        a.text(text, (panel.getLenX() - textWidth) / 2, panel.getLenY() / 4);
 
 
         a.popMatrix();
+        panel.getLabels().forEach(this::render);
         panel.getButtons().forEach(this::render);
+
     }
 }

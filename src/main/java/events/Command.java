@@ -1,4 +1,4 @@
-package graphics.gui;
+package events;
 
 public interface Command {
 

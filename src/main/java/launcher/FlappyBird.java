@@ -4,16 +4,16 @@ import graphics.Renderer;
 import graphics.TexturedModel;
 import graphics.color.Color;
 import graphics.gui.Button;
-import graphics.gui.Command;
+import events.Command;
+import graphics.gui.Label;
 import graphics.gui.Panel;
-import model.entity.Bird;
 import model.entity.Entity;
 import model.game.Game;
 import model.game.HumanGame;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class FlappyBird extends PApplet {
@@ -27,6 +27,7 @@ public class FlappyBird extends PApplet {
 
     private Button button;
     private Panel endScreen;
+    private Panel controlPanel;
 
     public void settings() {
         size(WIDTH, HEIGHT);
@@ -44,14 +45,20 @@ public class FlappyBird extends PApplet {
         final TexturedModel pipeModel = new TexturedModel(loadImage("assets/pipe.png"));
         game = new HumanGame(birdModel, pipeModel);
 
-        button = new Button(HumanGame.DIM_X / 2f - 75, HumanGame.DIM_Y / 2f - 25, 150, 50, "Rejouez !", new Color(245, 245, 80), 20, "ROG FONTS", new Command() {
+        button = new Button(Game.DIM_X / 2f - 75, Game.DIM_Y / 2f - 25, 150, 50, "Rejouez !", new Color(245, 245, 80), 20, "ROG FONTS", new Command() {
             @Override
             public void execute() {
                 game.reset();
             }
         });
+        final Label l = new Label(Game.DIM_X / 2f, Game.DIM_Y / 4f + 60, () -> "Votre score: " + game.getScore().getScore(), 20, "ROG FONTS");
+        endScreen = new Panel(Game.DIM_X / 2f - 150, Game.DIM_Y / 2f - 100,
+                300, 200,
+                Collections.singletonList(button),
+                new Color(200, 100, 100),
+                Collections.singletonList(l));
 
-        endScreen = new Panel(HumanGame.DIM_X / 2f - 150, HumanGame.DIM_Y / 2f - 100, 300, 200, Collections.singletonList(button), new Color(200, 100, 100), game.getScore());
+        controlPanel = new Panel(Game.DIM_X, 0, WIDTH, Game.DIM_Y + Game.TERRAIN_HEIGHT, new ArrayList<>(), new Color(242, 231, 191), new ArrayList<>());
     }
 
     public void draw() {
@@ -62,10 +69,13 @@ public class FlappyBird extends PApplet {
         // Do not touch, this resets the frame
         background(255);
 
+
+
         // Render the entity
         this.renderer.render(game);
 
-
+        this.renderer.render(controlPanel);
+        
         if(game.isFinished()) {
             this.renderer.render(endScreen);
         }

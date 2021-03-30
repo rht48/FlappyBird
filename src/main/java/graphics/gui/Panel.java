@@ -13,17 +13,17 @@ public class Panel {
     private final float lenY;
 
     private final List<Button> buttons;
-    private final Score score;
+    private final List<Label> labels;
     private final Color color;
 
-    public Panel(final float x, final float y, final float lenX, final float lenY, final List<Button> buttons, final Color color, final Score score) {
+    public Panel(final float x, final float y, final float lenX, final float lenY, final List<Button> buttons, final Color color, final List<Label> labels) {
         this.x = x;
         this.y = y;
         this.lenX = lenX;
         this.lenY = lenY;
         this.buttons = buttons;
         this.color = color;
-        this.score = score;
+        this.labels = labels;
     }
 
     public float getX() {
@@ -46,8 +46,8 @@ public class Panel {
         return buttons;
     }
 
-    public Score getScore() {
-        return score;
+    public List<Label> getLabels() {
+        return labels;
     }
 
     public Color getColor() {
