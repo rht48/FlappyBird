@@ -3,6 +3,8 @@ package graphics.gui;
 import graphics.color.Color;
 import model.game.score.Score;
 
+import java.util.List;
+
 public class Panel {
     private final float x;
     private final float y;
@@ -10,16 +12,16 @@ public class Panel {
     private final float lenX;
     private final float lenY;
 
-    private final Button button;
+    private final List<Button> buttons;
     private final Score score;
     private final Color color;
 
-    public Panel(final float x, final float y, final float lenX, final float lenY, final Button button, final Color color, final Score score) {
+    public Panel(final float x, final float y, final float lenX, final float lenY, final List<Button> buttons, final Color color, final Score score) {
         this.x = x;
         this.y = y;
         this.lenX = lenX;
         this.lenY = lenY;
-        this.button = button;
+        this.buttons = buttons;
         this.color = color;
         this.score = score;
     }
@@ -40,8 +42,8 @@ public class Panel {
         return lenY;
     }
 
-    public Button getButton() {
-        return button;
+    public List<Button> getButtons() {
+        return buttons;
     }
 
     public Score getScore() {

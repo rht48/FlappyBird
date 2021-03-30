@@ -138,7 +138,6 @@ public class Renderer {
 
 
         a.popMatrix();
-
-        render(panel.getButton());
+        panel.getButtons().forEach(this::render);
     }
 }

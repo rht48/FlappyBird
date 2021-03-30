@@ -13,6 +13,9 @@ import model.game.HumanGame;
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 public class FlappyBird extends PApplet {
 
     public static final int HEIGHT = 500;
@@ -48,7 +51,7 @@ public class FlappyBird extends PApplet {
             }
         });
 
-        endScreen = new Panel(HumanGame.DIM_X / 2f - 150, HumanGame.DIM_Y / 2f - 100, 300, 200, button, new Color(200, 100, 100), game.getScore());
+        endScreen = new Panel(HumanGame.DIM_X / 2f - 150, HumanGame.DIM_Y / 2f - 100, 300, 200, Collections.singletonList(button), new Color(200, 100, 100), game.getScore());
     }
 
     public void draw() {
