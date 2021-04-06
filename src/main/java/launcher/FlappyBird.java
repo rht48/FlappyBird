@@ -9,7 +9,6 @@ import graphics.gui.Label;
 import graphics.gui.Panel;
 import model.entity.Entity;
 import model.game.Game;
-import model.game.HumanGame;
 import model.game.IAGame;
 import model.ia.IAPlayer;
 import model.ia.randomia.RandomIA;
