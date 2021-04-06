@@ -1,7 +1,7 @@
 package model.entity;
 
 import graphics.TexturedModel;
-import launcher.FlappyBird;
+import model.game.HumanGame;
 import processing.core.PVector;
 
 public class Bird extends Entity {
@@ -11,10 +11,8 @@ public class Bird extends Entity {
     private double velocity;
 
 
-    public Bird(final TexturedModel model, final PVector position,
-                final float rotX, final float rotY, final float rotZ,
-                final float scaleX, final float scaleY, final float scaleZ) {
-        super(model, position, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
+    public Bird(final TexturedModel model, final PVector position) {
+        super(model, position, 0, 0, 0, 0.1f, 0.1f, 0);
         gravity = 0.6;
         lift = -10;
         velocity = 0;
@@ -32,13 +30,15 @@ public class Bird extends Entity {
         velocity += gravity;
         position.y += velocity;
 
-        if (position.y >= FlappyBird.HEIGHT - scaleY / 2) {
-            position.y = FlappyBird.HEIGHT - scaleY / 2;
+        // Cas en bas
+        if (position.y >= HumanGame.DIM_Y - height) {
+            position.y = HumanGame.DIM_Y - height;
             this.velocity = 0;
         }
 
-        if (position.y <= scaleY / 2) {
-            position.y = scaleY / 2;
+        // Cas en haut
+        if (position.y <= 0) {
+            position.y = 0;
             this.velocity = 0;
         }
     }
