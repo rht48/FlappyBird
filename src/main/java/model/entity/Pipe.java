@@ -21,6 +21,7 @@ public class Pipe extends Entity {
                 final float scaleX, final float scaleY, final float scaleZ) {
         super(model, position, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
         top = (int) (Math.random() * (float) (HumanGame.DIM_Y - spacing) / 2 + ((float) HumanGame.DIM_Y / 6));
+//        top = 150;
         bottom = top + spacing;
         speed = 3;
         highlight = false;

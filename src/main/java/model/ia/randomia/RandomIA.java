@@ -16,7 +16,7 @@ public class RandomIA implements IAPlayer {
 
     @Override
     public void update() {
-        if(Math.random() < 0.03) {
+        if(bird.next() &&  Math.random() < 0.03) {
             this.bird.jump();
         }
     }

@@ -100,6 +100,38 @@ public class IAGame extends Game {
         this.birds.add(bird);
     }
 
+    public float getHeightToPipe() {
+        final Pipe pipe = getNextPipe();
+        if (pipe != null) {
+            return pipe.getBottom();
+        }
+        return 0;
+    }
+
+    public float getDistanceToPipe() {
+        final Pipe pipe = getNextPipe();
+
+        if(pipe != null) {
+            return pipe.getPosition().x;
+        }
+
+        return 0;
+    }
+
+    public Pipe getNextPipe() {
+        return pipes.stream()
+                .min((o1, o2) -> {
+                    if(o1.getPosition().x < 100) {
+                        return -1;
+                    }
+                    if(o2.getPosition().x < 100) {
+                        return -1;
+                    }
+                    return (int) (o1.getPosition().x - o2.getPosition().x);
+                })
+                .orElse(null);
+    }
+
     @Override
     public void makeBirdsJump() {
         this.birds.forEach(Bird::jump);
