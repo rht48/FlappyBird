@@ -51,4 +51,8 @@ public class Bird extends Entity {
         return this.width;
     }
 
+    public double getVelocity() {
+        return this.velocity;
+    }
+
 }
