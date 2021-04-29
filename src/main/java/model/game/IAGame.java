@@ -39,6 +39,7 @@ public class IAGame extends Game {
 
     @Override
     public void update() {
+        System.out.println("Birds : " + this.birds.size());
         this.birds.forEach(bird -> {
             final IABird b = (IABird) bird;
             if(b.next()) {
@@ -98,6 +99,10 @@ public class IAGame extends Game {
 
     public void addBird(final Bird bird) {
         this.birds.add(bird);
+    }
+
+    public void removeBird(final Bird bird) {
+        this.birds.remove(bird);
     }
 
     public float getHeightToPipe() {

@@ -43,6 +43,7 @@ public class Population {
         super();
         this.neatSingleton = Neat.getInstance();
         this.chromosomes.add(topChromosome);
+        this.game = topChromosome.getGame();
     }
 
     /**
@@ -56,11 +57,16 @@ public class Population {
     }
 
     public void removeWeakChromosomes(final boolean allButOne) {
+        final int nbChromosomes = this.chromosomes.size();
         final int surviveCount = allButOne ? 1 : (int) Math.ceil(this.chromosomes.size() / 2f);
         final PriorityQueue<Chromosome> survivors = new PriorityQueue<>(new ChromosomeComparator());
          for(int ii = 0; ii < surviveCount; ++ii) {
              survivors.add(this.chromosomes.poll());
+
          }
+        for (Chromosome chromosome : this.chromosomes) {
+            this.game.removeBird(chromosome.getBird());
+        }
         this.chromosomes = survivors;
     }
 
@@ -74,6 +80,10 @@ public class Population {
 
     public Chromosome pollChromosome() {
         return this.chromosomes.poll();
+    }
+
+    public void removeChromosome(final Chromosome chromosome) {
+        this.chromosomes.remove(chromosome);
     }
 
     public void setTopFitness(final float topFitness) {
@@ -105,13 +115,18 @@ public class Population {
     public Chromosome generateChromosome() {
         Chromosome chromosome = new Chromosome(this.game);
         final List<Chromosome> chromosomeList = new ArrayList<>(this.chromosomes);
-        final Chromosome c1 = chromosomeList.get(rand.nextInt(chromosomeList.size()));
-        if (rand.nextFloat() < this.neatSingleton.crossoverChance) {
-            final Chromosome c2 = chromosomeList.get(rand.nextInt(chromosomeList.size()));
-            chromosome = Chromosome.crossOver(c1, c2);
-        } else {
-            chromosome = c1;
+        System.out.println(chromosomeList);
+        if(chromosomeList.size() > 0) {
+            if (rand.nextFloat() < this.neatSingleton.crossoverChance) {
+                final Chromosome c1 = chromosomeList.get(rand.nextInt(chromosomeList.size()));
+                final Chromosome c2 = chromosomeList.get(rand.nextInt(chromosomeList.size()));
+                chromosome = Chromosome.crossOver(c1, c2);
+            } else {
+                final Chromosome c1 = chromosomeList.get(rand.nextInt(chromosomeList.size()));
+                chromosome = c1;
+            }
         }
+
 
         chromosome = new Chromosome(chromosome);
         chromosome.mutate();

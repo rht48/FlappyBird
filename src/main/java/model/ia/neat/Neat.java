@@ -157,7 +157,9 @@ public final class Neat implements IAPlayer {
             }
 
             if(nChild >= 1) {
-                survived.add(new Population(population.peekChromosome()));
+                final Chromosome chromosome = population.peekChromosome();
+                population.removeChromosome(chromosome);
+                survived.add(new Population(chromosome));
             }
 
             for(int ii = 0; ii < nChild; ii++) {
@@ -190,7 +192,7 @@ public final class Neat implements IAPlayer {
         if(this.game.isFinished()) {
             this.evaluateFitness();
             this.topFitness = this.getTopChromosome().getFitness();
-            System.out.println("TopFitness : " + this.topFitness);
+            System.out.println("TopFitness : ---------------------------------" + this.topFitness);
 
             this.generateGeneration();
             this.game.reset();

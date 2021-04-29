@@ -102,7 +102,7 @@ public class Chromosome {
         this.neatSingleton = Neat.getInstance();
 
         this.game = parent.game;
-        this.bird = new IABird(game.getBirdModel(), new PVector(0, 0));
+        this.bird = parent.bird;
 
         for (ConnectionGene c : parent.connectionGeneList) {
             this.connectionGeneList.add(new ConnectionGene(c));

@@ -2,7 +2,7 @@
   "inputs": 2,
   "outputs":1,
   "hiddenNodes": 1000000,
-  "population": 5,
+  "population": 10,
 
   "compatibilityThreshold": 1,
   "excessCoefficent": 2,
