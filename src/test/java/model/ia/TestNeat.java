@@ -31,7 +31,7 @@ public class TestNeat {
     void testGeneratePopulation() {
         int nbGeneration = neatSingleton.getNbGeneration();
         assertEquals(nbGeneration, neatSingleton.getPopulationList().size());
-        this.neatSingleton.generatePopulation((IAGame) game);
+        this.neatSingleton.init((IAGame) game);
         assertEquals(nbGeneration + 1, neatSingleton.getNbGeneration());
         assertEquals(nbGeneration + 1, neatSingleton.getPopulationList().size());
         assertEquals(300, neatSingleton.getPopulationList().get(nbGeneration).getSize());

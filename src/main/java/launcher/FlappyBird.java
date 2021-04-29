@@ -10,6 +10,7 @@ import model.entity.Entity;
 import model.game.Game;
 import model.game.IAGame;
 import model.ia.IAPlayer;
+import model.ia.neat.Neat;
 import model.ia.qlearn.QLearnIA;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -57,7 +58,11 @@ public class FlappyBird extends PApplet {
 //            players.add(new RandomIA((IAGame) game));
 //        }
 
-        players.add(new QLearnIA((IAGame) game));
+//        players.add(new QLearnIA((IAGame) game));
+
+        final Neat neatSingleton = Neat.getInstance();
+        neatSingleton.init((IAGame) game);
+        players.add(neatSingleton);
 
         button = new Button(Game.DIM_X / 2f - 75, Game.DIM_Y / 2f - 25, 150, 50, "Rejouez !", new Color(245, 245, 80), 10, "ROG FONTS", () -> game.reset());
         final Label l = new Label(Game.DIM_X / 2f, Game.DIM_Y / 4f + 60, () -> "Votre score: " + game.getScore().getScore(), 20, "ROG FONTS");

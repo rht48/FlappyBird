@@ -24,25 +24,25 @@ public class Population {
     /**
      * At the beginning the top score is the minimal possible score
      */
-    private float topFitness = 0;
+    private float topFitness = 1;
 
     Random rand = new Random();
 
-    public Population() {
+    private IAGame game;
+
+    public Population(final IAGame game) {
         super();
         this.neatSingleton = Neat.getInstance();
+        this.game = game;
     }
 
     /**
      * Constructor
      */
-    public Population(final IAGame game) {
+    public Population(Chromosome topChromosome) {
         super();
         this.neatSingleton = Neat.getInstance();
-
-        for(int ii = 0; ii < this.neatSingleton.population; ++ii) {
-            this.addChromosome(new Chromosome(game));
-        }
+        this.chromosomes.add(topChromosome);
     }
 
     /**
@@ -84,15 +84,26 @@ public class Population {
      * Compute adjusted fitness for each chromosome in the population, given the size of the population
      */
     public void computeChromosomeAdjustedFitness() {
-        this.chromosomes.stream().forEach(chromosome -> chromosome.setAdjustedFitness(chromosome.getFitness() / chromosomes.size()));
+        for (Chromosome chromosome : this.chromosomes) {
+            float adjustedFitness = 0;
+            if(this.chromosomes.size() > 0) {
+                final float fitness = chromosome.getFitness();
+                adjustedFitness = fitness / chromosomes.size();
+            }
+            chromosome.setAdjustedFitness(adjustedFitness);
+        }
     }
 
     public float getTotalAdjustedFitness() {
-        return this.chromosomes.stream().map(chromosome -> chromosome.getAdjustedFitness()).reduce(0f, (a, b) -> a + b);
+        float result = 0;
+        for (Chromosome chromosome : this.chromosomes) {
+            result += chromosome.getAdjustedFitness();
+        }
+        return result;
     }
 
     public Chromosome generateChromosome() {
-        Chromosome chromosome;
+        Chromosome chromosome = new Chromosome(this.game);
         final List<Chromosome> chromosomeList = new ArrayList<>(this.chromosomes);
         final Chromosome c1 = chromosomeList.get(rand.nextInt(chromosomeList.size()));
         if (rand.nextFloat() < this.neatSingleton.crossoverChance) {
@@ -106,6 +117,10 @@ public class Population {
         chromosome.mutate();
 
         return chromosome;
+    }
+
+    public float getTopFitness() {
+        return this.peekChromosome().getFitness();
     }
 
     public PriorityQueue<Chromosome> getChromosomes() {

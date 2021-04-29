@@ -14,7 +14,7 @@ import processing.core.PImage;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestPopulation {
-    private Game game;
+    private IAGame game;
 
     private Population population;
 
@@ -23,11 +23,11 @@ public class TestPopulation {
 
     @BeforeEach
     void initPopulation() {
-        population = new Population();
+        population = new Population(this.game);
 
-        chromosome1 = new Chromosome();
+        chromosome1 = new Chromosome(this.game);
         chromosome1.setFitness(0.5f);
-        chromosome2 = new Chromosome();
+        chromosome2 = new Chromosome(this.game);
         chromosome2.setFitness(0.8f);
 
         population.addChromosome(chromosome1);
