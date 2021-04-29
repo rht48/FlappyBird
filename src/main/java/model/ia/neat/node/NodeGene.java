@@ -4,6 +4,10 @@ import model.ia.neat.ConnectionGene;
 
 import java.util.ArrayList;
 
+/**
+ * Each element position within a chromosome is a gene, which has a specific value
+ * and determines the genotype and the phenotype of the solution.
+ */
 public class NodeGene {
     private float value;
 

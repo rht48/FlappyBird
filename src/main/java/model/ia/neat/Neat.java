@@ -1,11 +1,15 @@
 package model.ia.neat;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import model.game.IAGame;
+import model.ia.IAPlayer;
 
-public final class Neat {
+public final class Neat implements IAPlayer {
     public int inputs;
     public int outputs;
     public int hiddenNodes;
@@ -32,7 +36,14 @@ public final class Neat {
 
     public int stalePool;
 
+    private IAGame game;
+    private ArrayList<Population> populationList = new ArrayList<>();
+    private int nbGeneration = 0;
+    private float topFitness = 0;
+    private int neatStaleness;
+
     private static final Object lock = new Object();
+    private static Neat instance;
 
     private Neat() {
         this.inputs = 2;
@@ -62,7 +73,59 @@ public final class Neat {
         this.stalePool = 20;
     }
 
-    private static Neat instance;
+    public void generatePopulation(final IAGame game) {
+        this.game = game;
+        this.addPopulation(new Population(game));
+    }
+
+    public void addPopulation(final Population population) {
+        this.populationList.add(population);
+    }
+
+    public void evaluateFitness() {
+        this.populationList.forEach(population -> population.getChromosomes().forEach(chromosome -> {
+            float fitness = chromosome.getBird().getScore().getScore();
+            chromosome.setFitness(fitness);
+        }));
+    }
+
+    public void computePopulationAdjustedFitness() {
+        this.populationList.forEach(p -> p.computeChromosomeAdjustedFitness());
+    }
+
+    public void breedNewGeneration() {
+        this.computePopulationAdjustedFitness();
+
+        // TODO faut que ca baise un peu !!!
+    }
+
+    public Chromosome getTopChromosome(){
+        PriorityQueue<Chromosome> allChromosome = new PriorityQueue<>(new ChromosomeComparator());
+
+        this.populationList.forEach(population -> population.getChromosomes().forEach(chromosome -> {
+            allChromosome.add(chromosome);
+        }));
+
+        return allChromosome.peek();
+    }
+
+    @Override
+    public void update() {
+        if(this.game.isFinished()) {
+            this.evaluateFitness();
+            this.topFitness = this.getTopChromosome().getFitness();
+            System.out.println("TopFitness : " + this.topFitness);
+
+            this.breedNewGeneration();
+
+            this.nbGeneration++;
+            this.game.reset();
+        } {
+            this.populationList.forEach(population -> population.getChromosomes().forEach(chromosome -> {
+                chromosome.play();
+            }));
+        }
+    }
 
     public static Neat getInstance() {
         synchronized (lock) {
@@ -73,29 +136,57 @@ public final class Neat {
         }
     }
 
-    public static void load(final String file) {
-        load(new File(file));
+    public static void setInstance(Neat neat) {
+        synchronized (lock) {
+            instance = neat;
+        }
     }
 
-    public static void load(final File file) {
+    public static void loadFromPath(final String file) {
+        loadFromFile(new File(file));
+    }
+
+    public static void loadFromFile(final File file) {
         synchronized (lock) {
-            instance = fromFile(file);
+            final Neat neat = readFile(file);
+            Neat.setInstance(neat);
 
             // no config file found
-            if (instance == null) {
-                instance = new Neat();
+            if (Neat.getInstance() == null) {
+                Neat.setInstance(new Neat());
             }
         }
     }
 
-    private static Neat fromFile(final File configFile) {
+    public static Neat readFile(final File configFile) {
         try {
             final Gson gson = new GsonBuilder().setPrettyPrinting().create();
             final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile)));
-            return gson.fromJson(reader, Neat.class);
+            final Neat neat = gson.fromJson(reader, Neat.class);
+            return neat;
         } catch (FileNotFoundException e) {
             return null;
         }
+    }
+
+    public ArrayList<Population> getPopulationList() {
+        return populationList;
+    }
+
+    public int getNbGeneration() {
+        return nbGeneration;
+    }
+
+    public void setNbGeneration(final int nbGeneration) {
+        this.nbGeneration = nbGeneration;
+    }
+
+    public float getTopFitness() {
+        return topFitness;
+    }
+
+    public void setTopFitness(float topFitness) {
+        this.topFitness = topFitness;
     }
 
     @Override
