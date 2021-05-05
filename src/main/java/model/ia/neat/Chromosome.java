@@ -79,6 +79,7 @@ public class Chromosome {
         this.fitness = 1;
         this.game = game;
         this.bird = new IABird(this.game.getBirdModel(), new PVector(0, 0));
+        this.game.addBird(this.bird);
 
         this.mutationRates.put(MutationKeys.STEPS, this.neatSingleton.steps);
         this.mutationRates.put(MutationKeys.PERTURB_CHANCE, this.neatSingleton.perturbChance);
@@ -89,8 +90,6 @@ public class Chromosome {
         this.mutationRates.put(MutationKeys.BIAS_CONNECTION_MUTATION_CHANCE, this.neatSingleton.biasConnectionMutationChance);
         this.mutationRates.put(MutationKeys.DISABLE_MUTATION_CHANCE, this.neatSingleton.disableMutationChance);
         this.mutationRates.put(MutationKeys.ENABLE_MUTATION_CHANCE, this.neatSingleton.enableMutationChance);
-
-        this.game.addBird(this.bird);
     }
 
     /**
@@ -102,7 +101,8 @@ public class Chromosome {
         this.neatSingleton = Neat.getInstance();
 
         this.game = parent.game;
-        this.bird = parent.bird;
+        this.bird = new IABird(this.game.getBirdModel(), new PVector(0, 0));
+        this.game.addBird(this.bird);
 
         for (ConnectionGene c : parent.connectionGeneList) {
             this.connectionGeneList.add(new ConnectionGene(c));
@@ -130,16 +130,18 @@ public class Chromosome {
             parent2 = temp;
         }
 
-        final Chromosome child = new Chromosome(parent1.game);
+        final Chromosome child = new Chromosome(parent1);
         // Associates for each parent an innovation with a connection
         final TreeMap<Integer, ConnectionGene> geneMap1 = new TreeMap<>();
         final TreeMap<Integer, ConnectionGene> geneMap2 = new TreeMap<>();
 
         for (ConnectionGene con : parent1.connectionGeneList) {
+            assert !geneMap1.containsKey(con.getInnovation());
             geneMap1.put(con.getInnovation(), con);
         }
 
         for (ConnectionGene con : parent2.connectionGeneList) {
+            assert !geneMap2.containsKey(con.getInnovation());
             geneMap2.put(con.getInnovation(), con);
         }
 
@@ -433,14 +435,15 @@ public class Chromosome {
 
     public void play() {
         // Inputs
-        float distanceToPipe = (int) (this.game.getDistanceToPipe() - (this.bird.getPosition().x + this.bird.getWidth()));
-        float heightPipe = (int) (this.game.getHeightToPipe() - (this.bird.getPosition().y + this.bird.getHeight()));
+        float distanceToPipe = (int) ((this.game.getDistanceToPipe() - (this.bird.getPosition().x + this.bird.getWidth())) / 500);
+        float heightPipe = (int) ((this.game.getHeightToPipe() - (this.bird.getPosition().y + this.bird.getHeight())) / 600);
 
         float[] inputs = { heightPipe, distanceToPipe };
 
         final float res = this.evaluateNetwork(inputs)[0];
 
         if( res > 0.5) {
+            System.out.println(res);
             this.bird.jump();
         }
     }
@@ -456,58 +459,60 @@ public class Chromosome {
     }
 
     public boolean isSamePopulation(Chromosome other)  {
-        TreeMap<Integer, ConnectionGene> geneMap1 = new TreeMap<>();
-        TreeMap<Integer, ConnectionGene> geneMap2 = new TreeMap<>();
-
-        int matching = 0;
-        int disjoint = 0;
-        int excess = 0;
-        float weight = 0;
-        int lowMaxInnovation;
-        float delta = 0;
-
-        for(ConnectionGene con: this.connectionGeneList) {
-            assert  !geneMap1.containsKey(con.getInnovation());             //TODO Remove for better performance
-            geneMap1.put(con.getInnovation(), con);
-        }
-
-        for(ConnectionGene con: other.connectionGeneList) {
-            assert  !geneMap2.containsKey(con.getInnovation());             //TODO Remove for better performance
-            geneMap2.put(con.getInnovation(), con);
-        }
-        if(geneMap1.isEmpty() || geneMap2.isEmpty())
-            lowMaxInnovation = 0;
-        else
-            lowMaxInnovation = Math.min(geneMap1.lastKey(),geneMap2.lastKey());
-
-        Set<Integer> innovationP1 = geneMap1.keySet();
-        Set<Integer> innovationP2 = geneMap2.keySet();
-
-        Set<Integer> allInnovations = new HashSet<Integer>(innovationP1);
-        allInnovations.addAll(innovationP2);
-
-        for(int key : allInnovations){
-
-            if(geneMap1.containsKey(key) && geneMap2.containsKey(key)){
-                matching ++;
-                weight += Math.abs(geneMap1.get(key).getWeight() - geneMap2.get(key).getWeight());
-            }else {
-                if(key < lowMaxInnovation){
-                    disjoint++;
-                }else{
-                    excess++;
-                }
-            }
-        }
-
-        //System.out.println("matching : "+matching + "\ndisjoint : "+ disjoint + "\nExcess : "+ excess +"\nWeight : "+ weight);
-
-        int N = matching+disjoint+excess ;
-
-        if(N>0)
-            delta = (this.neatSingleton.excessCoefficent * excess + this.neatSingleton.disjointCoefficent * disjoint) / N + (this.neatSingleton.weightCoefficent * weight) / matching;
-
-        return delta < this.neatSingleton.compatibilityThreshold;
+        return true;
+//        TreeMap<Integer, ConnectionGene> geneMap1 = new TreeMap<>();
+//        TreeMap<Integer, ConnectionGene> geneMap2 = new TreeMap<>();
+//
+//        int matching = 0;
+//        int disjoint = 0;
+//        int excess = 0;
+//        float weight = 0;
+//        int lowMaxInnovation;
+//        float delta = 0;
+//
+//        for(ConnectionGene con: this.connectionGeneList) {
+//            assert  !geneMap1.containsKey(con.getInnovation());             //TODO Remove for better performance
+//            geneMap1.put(con.getInnovation(), con);
+//        }
+//
+//        for(ConnectionGene con: other.connectionGeneList) {
+//            assert  !geneMap2.containsKey(con.getInnovation());             //TODO Remove for better performance
+//            geneMap2.put(con.getInnovation(), con);
+//        }
+//        if(geneMap1.isEmpty() || geneMap2.isEmpty()) {
+//            lowMaxInnovation = 0;
+//        } else {
+//            lowMaxInnovation = Math.min(geneMap1.lastKey(), geneMap2.lastKey());
+//        }
+//
+//        Set<Integer> innovationP1 = geneMap1.keySet();
+//        Set<Integer> innovationP2 = geneMap2.keySet();
+//
+//        Set<Integer> allInnovations = new HashSet<Integer>(innovationP1);
+//        allInnovations.addAll(innovationP2);
+//
+//        for(int key : allInnovations){
+//
+//            if(geneMap1.containsKey(key) && geneMap2.containsKey(key)){
+//                matching ++;
+//                weight += Math.abs(geneMap1.get(key).getWeight() - geneMap2.get(key).getWeight());
+//            }else {
+//                if(key < lowMaxInnovation){
+//                    disjoint++;
+//                }else{
+//                    excess++;
+//                }
+//            }
+//        }
+//
+//        //System.out.println("matching : "+matching + "\ndisjoint : "+ disjoint + "\nExcess : "+ excess +"\nWeight : "+ weight);
+//
+//        int N = matching+disjoint+excess ;
+//
+//        if(N>0)
+//            delta = (this.neatSingleton.excessCoefficent * excess + this.neatSingleton.disjointCoefficent * disjoint) / N + (this.neatSingleton.weightCoefficent * weight) / matching;
+//
+//        return delta < this.neatSingleton.compatibilityThreshold;
     }
 
     public TreeMap<Integer, NodeGene> getNodes() {
@@ -520,6 +525,11 @@ public class Chromosome {
 
     public IABird getBird() {
         return this.bird;
+    }
+
+    @Override
+    public String toString() {
+        return "c" + bird.getId();
     }
 }
 

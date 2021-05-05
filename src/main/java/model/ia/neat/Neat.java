@@ -50,8 +50,8 @@ public final class Neat implements IAPlayer {
     private Neat() {
         this.inputs = 2;
         this.outputs = 1;
-        this.hiddenNodes = 1000000;
-        this.population = 5;
+        this.hiddenNodes = 5;
+        this.population = 10;
 
         this.compatibilityThreshold = 1;
         this.excessCoefficent = 2;
@@ -78,7 +78,8 @@ public final class Neat implements IAPlayer {
     public void init(final IAGame game) {
         this.game = game;
         for(int ii = 0; ii < this.population; ii++) {
-            this.addToPopulation(new Chromosome(this.game));
+            final Chromosome chromosome = new Chromosome(this.game);
+            this.addToPopulation(chromosome);
         }
     }
 
@@ -100,7 +101,7 @@ public final class Neat implements IAPlayer {
     public void evaluateFitness() {
         for (Population population : this.populationList) {
             for (Chromosome chromosome : population.getChromosomes()) {
-                chromosome.setFitness(distance);
+                chromosome.setFitness(0.01f * distance + 1000f * chromosome.getBird().getScore().getScore());
             }
         }
     }
@@ -137,43 +138,54 @@ public final class Neat implements IAPlayer {
 //        });
 //    }
 
-    public ArrayList<Chromosome> generateGeneration() {
+//    public ArrayList<Chromosome> generateGeneration() {
+//        this.computePopulationAdjustedFitness();
+//        this.removeWeakChromosomesFromPopulations(false);
+//        // this.removeStalePopulation();
+//        final ArrayList<Population> survived = new ArrayList<>();
+//
+//        final float globalAdjustedFitness = this.computeGlobalAdjustedFitness();
+//        final ArrayList<Chromosome> children = new ArrayList<>();
+//        float carryOver = 0;
+//
+//        for (Population population : this.populationList) {
+//            float fChild = globalAdjustedFitness != 0 ? this.population * (population.getTotalAdjustedFitness() / globalAdjustedFitness) : 0;
+//            int nChild = (int) fChild;
+//            carryOver += (fChild - nChild);
+//            if(carryOver > 1) {
+//                nChild++;
+//                carryOver -= 1;
+//            }
+//
+//            if(nChild >= 1) {
+//                final Chromosome chromosome = population.peekChromosome();
+//                population.removeChromosome(chromosome);
+//                survived.add(new Population(chromosome));
+//
+//                for(int ii = 0; ii < nChild; ii++) {
+//                    final Chromosome child = population.generateChromosome();
+//                    children.add(child);
+//                }
+//            }
+//        }
+//
+//        this.populationList = survived;
+//        for (Chromosome child : children) {
+//            this.addToPopulation(child);
+//        }
+//        this.nbGeneration++;
+//        return children;
+//    }
+
+    public void generateGeneration() {
         this.computePopulationAdjustedFitness();
         this.removeWeakChromosomesFromPopulations(false);
-        // this.removeStalePopulation();
-        final ArrayList<Population> survived = new ArrayList<>();
-
-        final float globalAdjustedFitness = this.computeGlobalAdjustedFitness();
-        final ArrayList<Chromosome> children = new ArrayList<>();
-        float carryOver = 0;
-
-        for (Population population : this.populationList) {
-            float fChild = globalAdjustedFitness != 0 ? this.population * (population.getTotalAdjustedFitness() / globalAdjustedFitness) : 0;
-            int nChild = (int) fChild;
-            carryOver += (fChild - nChild);
-            if(carryOver > 1) {
-                nChild++;
-                carryOver -= 1;
-            }
-
-            if(nChild >= 1) {
-                final Chromosome chromosome = population.peekChromosome();
-                population.removeChromosome(chromosome);
-                survived.add(new Population(chromosome));
-            }
-
-            for(int ii = 0; ii < nChild; ii++) {
-                final Chromosome child = population.generateChromosome();
-                children.add(child);
+        for(Population pop : this.populationList) {
+            while(pop.getSize() < this.population) {
+                final Chromosome chromosome = pop.generateChromosome();
+                pop.addChromosome(chromosome);
             }
         }
-
-        this.populationList = survived;
-        for (Chromosome child : children) {
-            this.addToPopulation(child);
-        }
-        this.nbGeneration++;
-        return children;
     }
 
     public Chromosome getTopChromosome(){
@@ -192,12 +204,16 @@ public final class Neat implements IAPlayer {
         if(this.game.isFinished()) {
             this.evaluateFitness();
             this.topFitness = this.getTopChromosome().getFitness();
+            // Affichage
             System.out.println("TopFitness : ---------------------------------" + this.topFitness);
 
             this.generateGeneration();
             this.game.reset();
             this.distance = 0;
-        } {
+            this.populationList.forEach(pop -> {
+                System.out.println(pop.getChromosomes());
+            });
+        } else {
             for (Population population : this.populationList) {
                 for (Chromosome chromosome : population.getChromosomes()) {
                     chromosome.play();

@@ -35,11 +35,11 @@ public class IAGame extends Game {
         this.pipes = new ArrayList<>();
         this.score.reset();
         this.finished = false;
+        System.out.println("Birds : " + this.birds.size() + this.birds);
     }
 
     @Override
     public void update() {
-        System.out.println("Birds : " + this.birds.size());
         this.birds.forEach(bird -> {
             final IABird b = (IABird) bird;
             if(b.next()) {
@@ -98,7 +98,9 @@ public class IAGame extends Game {
     }
 
     public void addBird(final Bird bird) {
-        this.birds.add(bird);
+        if (!this.birds.contains(bird)) {
+            this.birds.add(bird);
+        }
     }
 
     public void removeBird(final Bird bird) {

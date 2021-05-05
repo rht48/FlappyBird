@@ -57,17 +57,21 @@ public class Population {
     }
 
     public void removeWeakChromosomes(final boolean allButOne) {
-        final int nbChromosomes = this.chromosomes.size();
-        final int surviveCount = allButOne ? 1 : (int) Math.ceil(this.chromosomes.size() / 2f);
+        System.out.println("Taille de départ: " + this.chromosomes.size());
+        final int surviveCount = allButOne ? 1 : (int) Math.ceil(this.chromosomes.size() * 0.75f);
         final PriorityQueue<Chromosome> survivors = new PriorityQueue<>(new ChromosomeComparator());
-         for(int ii = 0; ii < surviveCount; ++ii) {
-             survivors.add(this.chromosomes.poll());
+        System.out.println("Nombre à garder : " + surviveCount);
 
+        for(int ii = 0; ii < surviveCount; ++ii) {
+             survivors.add(this.chromosomes.poll());
          }
+        System.out.println("Taille du restant: " + this.chromosomes.size());
         for (Chromosome chromosome : this.chromosomes) {
             this.game.removeBird(chromosome.getBird());
         }
         this.chromosomes = survivors;
+        System.out.println("Nombre après removeWeakChromosomes : " + chromosomes.size());
+
     }
 
     public int getSize() {
@@ -113,23 +117,31 @@ public class Population {
     }
 
     public Chromosome generateChromosome() {
-        Chromosome chromosome = new Chromosome(this.game);
+        Chromosome chromosome = null;
         final List<Chromosome> chromosomeList = new ArrayList<>(this.chromosomes);
-        System.out.println(chromosomeList);
         if(chromosomeList.size() > 0) {
             if (rand.nextFloat() < this.neatSingleton.crossoverChance) {
                 final Chromosome c1 = chromosomeList.get(rand.nextInt(chromosomeList.size()));
                 final Chromosome c2 = chromosomeList.get(rand.nextInt(chromosomeList.size()));
                 chromosome = Chromosome.crossOver(c1, c2);
+                this.game.removeBird(chromosome.getBird());
             } else {
                 final Chromosome c1 = chromosomeList.get(rand.nextInt(chromosomeList.size()));
                 chromosome = c1;
+                // this.game.removeBird(c1.getBird());
             }
         }
 
+        if(chromosome == null) {
+            chromosome = new Chromosome(this.game);
+//            this.game.addBird(chrom//
+        }else {
+            chromosome = new Chromosome(chromosome);
 
-        chromosome = new Chromosome(chromosome);
+        }
         chromosome.mutate();
+
+
 
         return chromosome;
     }
