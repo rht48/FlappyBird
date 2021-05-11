@@ -1,6 +1,7 @@
 package model.ia.qlearn;
 
 import model.entity.IABird;
+import model.entity.Pipe;
 import model.game.IAGame;
 import model.ia.IAPlayer;
 import processing.core.PVector;
@@ -13,8 +14,8 @@ public class QLearnIA implements IAPlayer {
     private final IABird bird;
     private final IAGame game;
 
-    private double lambda = 0.05;
-    private double epsilon = 0.01;
+    private double lambda = 0.01;
+    private double epsilon = 0.05;
     private final double gamma = 1;
     private final QTable table;
 
@@ -25,6 +26,7 @@ public class QLearnIA implements IAPlayer {
     private Action prevAction;
 
     private int numberJumps = 0;
+    private int randoms = 0;
 
     private final List<Move> history;
     private static final int NUMBER_MOVES = 100;
@@ -41,7 +43,7 @@ public class QLearnIA implements IAPlayer {
 //    public void update() {
 //        final int distanceToPipe = (int) (this.game.getDistanceToPipe() - (this.bird.getPosition().x + this.bird.getWidth()));
 //        final int heightToPipe = (int) (this.game.getHeightToPipe() - (this.bird.getPosition().y + this.bird.getHeight()));
-//        final State currentState = new State(distanceToPipe, heightToPipe, (float) bird.getVelocity(), bird.next());
+//        final State currentState = new State(distanceToPipe, heightToPipe, 0, false, 0);
 //        final Action action = this.table.argmax(currentState);
 //
 //        if(action.equals(Action.JUMP)) {
@@ -62,12 +64,12 @@ public class QLearnIA implements IAPlayer {
 //            System.out.print("Generation: " + genNumber + " Max score: " + maxScore + "\r");
 //        }
 //    }
-
+//
 //    private void updateTable() {
 //        Move lastMove = null;
 //        while(!this.history.isEmpty()) {
 //            final Move currentMove = this.history.remove(0);
-//            final double reward = calculateReward(currentMove);
+//            final double reward = calculateReward(currentMove, this.history.size());
 //            if(lastMove != null) {
 //
 //                final double lr = getLearningRate(lastMove.getState(), lastMove.getAction());
@@ -82,22 +84,33 @@ public class QLearnIA implements IAPlayer {
     @Override
     public void update() {
         final int distanceToPipe = (int) (this.game.getDistanceToPipe() - (this.bird.getPosition().x + this.bird.getWidth()));
+        final int birdHeight = (int) (this.bird.getPosition().y + this.bird.getHeight());
         final int heightToPipe = (int) (this.game.getHeightToPipe() - (this.bird.getPosition().y + this.bird.getHeight()));
-        final State currentState = new State(distanceToPipe, heightToPipe, (float) bird.getVelocity());
+        final int heightSecondPipe = (int) (this.game.getHeightSecondPipe() - (this.bird.getPosition().y + this.bird.getHeight()));
+//        System.out.println(distanceToPipe);
+        final State currentState = new State(distanceToPipe, heightToPipe, 0, false, 0);
         final Action action;
 
         if(this.prevState != null && this.prevAction != null) {
-            final double reward = calculateReward();
+            final double reward = calculateReward(prevState, prevAction);
             final double lr = getLearningRate(prevState, prevAction);
             final double value = lr * (reward + gamma * table.max(currentState)) + (1.0 - lr) * table.get(prevState, prevAction);
             table.set(prevState, prevAction, value);
+
         }
 
-        if(Math.random() < epsilon) {
-            action = Action.getRandom();
-        }else {
-            action = table.argmax(currentState);
-        }
+//        System.out.println(distanceToPipe + " " + heightToPipe);
+
+//        final double randomChance = epsilon * getMultiplier(prevState, prevAction);
+//        if(Math.random() < epsilon) {
+//            action = Action.getRandom();
+//            randoms++;
+//        }else {
+//            action = table.argmax(currentState);
+//        }
+
+
+        action = table.argmax(currentState);
 
         if(action.equals(Action.JUMP)) {
             bird.jump();
@@ -111,37 +124,77 @@ public class QLearnIA implements IAPlayer {
             if(score > maxScore) {
                 maxScore = score;
             }
+            if(Math.random() < 0.2) {
+                epsilon *= 0.95;
+            }
             game.reset();
             genNumber++;
-            System.out.print("Generation: " + genNumber + " Max score: " + maxScore + "\r");
+            System.out.print("Generation: " + genNumber + " Max score: " + maxScore +
+                    " Current score: " + score + " Randoms: " + randoms + "\r");
+            randoms = 0;
             this.prevState = null;
             this.prevAction = null;
-            epsilon *= 0.99999;
+
+            if(genNumber % 10000 == 0) {
+                this.table.save(genNumber);
+            }
         }
     }
 
-    public double calculateReward() {
-        return bird.next() ? 1 : -1000;
+//    public double calculateReward() {
+//        return bird.next() ? 20 : -1000;
+//    }
+
+    public double calculateReward(final State state, final Action action) {
+        if(state.getHeightToPipe() > Pipe.spacing && action.equals(Action.JUMP)) {
+            return -100;
+        }
+        if(state.getDistanceToPipe() < 50 && state.getHeightToPipe() < -50) {
+            return -100;
+        }
+        return bird.next() ? 20 : -1000;
     }
 
-//    public double calculateReward(final Move move) {
-//
+//    public double calculateReward(final Move move, int moveFromLast) {
 //        if(move.getAction().equals(Action.JUMP)) {
-//            numberJumps --;
+//            numberJumps--;
+//            if(numberJumps == 0) {
+//                return -100;
+//            }
 //        }
-//        if(numberJumps == 0 || !move.getState().isAlive()) {
-//            return -10;
+//        if(moveFromLast < 10 && moveFromLast > 0) {
+//            return -1000;
 //        }
-//        return 10;
+//        return moveFromLast != 0 ? 15 : - 1000;
+////        if(move.getAction().equals(Action.JUMP)) {
+////            numberJumps --;
+////        }
+////        if(numberJumps == 0 || !move.getState().isAlive()) {
+////            return -1000;
+////        }
+////        return 10;
 ////        if(numberJumps == 0) {
 ////            return -1000;
 ////        }
 ////        return 15;
 //    }
 
+    public double getMultiplier(final State state, final Action action) {
+        final double number = table.getNumber(state, action);
+        return 2.0 / (1.0 + Math.exp(0.1 * number));
+    }
+
     public double getLearningRate(final State state, final Action action) {
         final double number = table.getNumber(state, action);
-        return 1 / (1.0 + number);
+//        return lambda;
+//        return 1.0 / (1.0 + number);
+//        return 0.8;
+//        System.out.println(number);
+        if(number < 10000) {
+            return 1.0 / (1.0 + Math.exp(0.001 * (number - 10000)));
+        }else {
+            return 0.001;
+        }
     }
 
     public int getGenNumber() {

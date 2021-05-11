@@ -7,8 +7,8 @@ import processing.core.PVector;
 
 public class Pipe extends Entity {
 
-    private static final int spacing = 150;
-    private final int top;
+    public static final int spacing = 150;
+    private int top;
     private final int bottom;
     public static double speed;
     private boolean birdHasPassed;
@@ -21,6 +21,7 @@ public class Pipe extends Entity {
                 final float scaleX, final float scaleY, final float scaleZ) {
         super(model, position, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
         top = (int) (Math.random() * (float) (HumanGame.DIM_Y - spacing) / 2 + ((float) HumanGame.DIM_Y / 6));
+        top = (int) ((int) 5*(Math.ceil((int)Math.abs((float)top/5))));
 //        top = 150;
         bottom = top + spacing;
         speed = 3;
