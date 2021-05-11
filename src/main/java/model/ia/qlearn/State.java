@@ -7,13 +7,16 @@ public class State {
     private final float distanceToPipe;
     private final float heightToPipe;
     private final float velocity;
+    private final boolean isAlive;
+    private final int birdHeight;
 
 
-    public State(final float distanceToPipe, final float heightToPipe, final float velocity) {
+    public State(final float distanceToPipe, final float heightToPipe, final float velocity, final boolean isAlive, final int birdHeight) {
         this.distanceToPipe = distanceToPipe;
         this.heightToPipe = heightToPipe;
         this.velocity = velocity;
-
+        this.isAlive = isAlive;
+        this.birdHeight = birdHeight;
     }
 
     public float getDistanceToPipe() {
@@ -22,6 +25,10 @@ public class State {
 
     public float getHeightToPipe() {
         return heightToPipe;
+    }
+
+    public boolean isAlive() {
+        return this.isAlive;
     }
 
 
@@ -36,7 +43,9 @@ public class State {
         final State state = (State) o;
         return  Math.abs(state.distanceToPipe - distanceToPipe) < 0.001  &&
                 Math.abs(state.heightToPipe - heightToPipe) < 0.001 &&
-                Math.abs(state.velocity - velocity) < 0.001;
+                Math.abs(state.velocity - velocity) < 0.001 &&
+                state.isAlive == isAlive &&
+                state.birdHeight == birdHeight;
     }
 
     public float getVelocity() {

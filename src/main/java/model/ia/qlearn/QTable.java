@@ -1,5 +1,7 @@
 package model.ia.qlearn;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,26 +27,24 @@ public class QTable {
 
     public Action argmax(final State state) {
         if(table.containsKey(state)) {
-            double max = -Double.MAX_VALUE;
+            double max = Double.NEGATIVE_INFINITY;
             Action a = Action.NOT_JUMP;
             for(var action : Action.values()) {
                 final double val = get(state, action);
-//                System.out.print(action + " " + val + " ");
                 if(val > max) {
-
                     max = val;
                     a = action;
                 }
             }
-//            System.out.println();
             return a;
         }
         return Action.NOT_JUMP;
     }
 
     public double max(final State state) {
+
         if(table.containsKey(state)) {
-            double max = 0;
+            double max = Double.NEGATIVE_INFINITY;
             for(var action : Action.values()) {
                 final double val = get(state, action);
                 if(val > max) {
@@ -53,7 +53,7 @@ public class QTable {
             }
             return max;
         }
-        return Double.MIN_VALUE;
+        return 0.0;
     }
 
     public void set(final State state, final Action action, final double value) {
@@ -61,7 +61,9 @@ public class QTable {
             this.table.put(state, new HashMap<>());
             this.counter.put(state, new HashMap<>());
         }
+
         this.table.get(state).put(action, value);
+
         if(!this.counter.get(state).containsKey(action)) {
             this.counter.get(state).put(action, 0);
         }
@@ -82,5 +84,49 @@ public class QTable {
             return counter.get(state).get(action);
         }
         return 0;
+    }
+
+    public void save(final int genNumber) {
+        try {
+            FileWriter writer = new FileWriter("qtable/" + genNumber + ".txt");
+            final Map<Integer, Map<Integer, String>> map = new HashMap<>();
+            for(var key : this.table.keySet()) {
+                if(!map.containsKey((int) key.getHeightToPipe())) {
+                    map.put((int) key.getHeightToPipe(), new HashMap<>());
+                }
+                String sentence = this.argmax(key).equals(Action.JUMP) ? "JUMP" : "    ";
+                map.get((int) key.getHeightToPipe()).put((int) key.getDistanceToPipe(), sentence);
+            }
+            map.get(map.keySet().toArray()[0]).keySet().stream().sorted().forEach(key -> {
+                try {
+                    writer.write("\t\t" + key);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            writer.write("\n");
+            map.keySet().stream().sorted().forEach(key -> {
+                try {
+                    writer.write(key + "\t");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                map.get(key).keySet().stream().sorted().forEach(k -> {
+                    try {
+                        writer.write(map.get(key).get(k) + "\t\t");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                try {
+                    writer.write("\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
